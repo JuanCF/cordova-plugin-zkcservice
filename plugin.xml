@@ -30,7 +30,7 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="zkcservice" >
-                <param name="android-package" value="net.trentgardner.cordova.androidwear.ZKCServicePlugin"/>
+                <param name="android-package" value="ls.co.apos.ZKCServicePlugin"/>
             </feature>
         </config-file>
         
@@ -42,8 +42,7 @@
             </service>
         </config-file>
 
-        <source-file src="src/android/ZKCServicePlugin.java" target-dir="src/ls/co/apos" />
-        <source-file src="src/android/WearProviderService.java" target-dir="src/ls/co/apos" />
+        <source-file src="src/android/ZKCServicePlugin.java" target-dir="src/ls/co/apos" />        
         <source-file src="aidl/android/IZKCService.aidl" target-dir="src/ls/co/apos" />
         <source-file src="aidl/android/ICallback.aidl" target-dir="src/ls/co/apos" />
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
