@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.smartdevice.aidltestdemo.R;
+
 
 public class LoadingDialog extends Dialog {
 
