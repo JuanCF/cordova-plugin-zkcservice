@@ -1,0 +1,37 @@
+{
+  "name": "cordova-plugin-zkcservice",
+  "version": "1.0.0",
+  "description": "Communication from your cordova application to an ZKC SmartDeviceAIDL service application.",
+  "cordova": {
+    "id": "cordova-plugin-zkcservice.ZKCServicePlugin",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matsosos/cordova-plugin-zkcservice.git"
+  },
+  "keywords": [
+    "Cordova",
+    "Android",
+    "ZKC900/901",
+    "Plugin",
+    "POS",
+    "Printer",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Seboka Matsoso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matsosos/cordova-plugin-zkcservice/issues"
+  },
+  "homepage": "https://github.com/matsosos/cordova-plugin-zkcservice#readme"
+}
