@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Communication from your cordova application to an ZKC SmartDeviceAIDL service application.",
   "cordova": {
-    "id": "cordova-plugin-zkcservice.ZKCServicePlugin",
+    "id": "cordova-plugin-zkcservice",
     "platforms": [
       "android"
     ]
