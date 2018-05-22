@@ -1,6 +1,6 @@
 {
   "id": "cordova-plugin-zkcservice,
-  "spec": "cordova-plugin-zkcservice",
+  "name": "cordova-plugin-zkcservice",
 
   "author": {
     "name": "Seboka Matsoso"
@@ -37,7 +37,7 @@
   "name": "cordova-plugin-zkcservice.git",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matsosos/cordova-plugin-zkcservice.git"
+    "url": "https://github.com/matsosos/cordova-plugin-zkcservice"
   },
   "version": "1.0.0"
 }
