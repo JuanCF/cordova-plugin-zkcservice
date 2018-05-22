@@ -1,27 +1,7 @@
 {
-  "_from": "cordova-plugin-zkcservice",
-  "_id": "cordova-plugin-zkcservice
-  "_inBundle": false, 
-  "_location": "/cordova-plugin-zkcservice
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "cordova-plugin-zkcservice",
-    "name": "cordova-plugin-zkcservice"
-    "escapedName": "cordova-plugin-zkcservice",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/cordova-androidwear/-/cordova-androidwear-1.0.1.tgz",
-  "_shasum": "6406400cee175f880314fbc3e179310dd1953452",
-  "_spec": "cordova-plugin-zkcservice",
-  "_where": "C:\\xampp\\htdocs\\Apos",
+  "id": "cordova-plugin-zkcservice,
+  "spec": "cordova-plugin-zkcservice",
+
   "author": {
     "name": "Seboka Matsoso"
   },
@@ -57,7 +37,7 @@
   "name": "cordova-plugin-zkcservice.git",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matsosos/cordova-plugin-zkcservice.git"
+    "url": "https://github.com/matsosos/cordova-plugin-zkcservice.git"
   },
   "version": "1.0.0"
 }
