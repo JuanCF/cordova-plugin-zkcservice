@@ -25,10 +25,6 @@ import android.widget.Toast;
 
 import com.smartdevice.aidl.IZKCService;
 
-/* import ls.co.apos.common.LoadingDialog;
-import ls.co.apos.common.MessageCenter;
-import ls.co.apos.common.MessageType; */
-
 public class ZKCServicePlugin extends CordovaPlugin {
 	
 }
