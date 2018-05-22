@@ -1,40 +1,34 @@
-package ls.co.pluginx;
- 
-import org.apache.cordova.api.CallbackContext;
-import org.apache.cordova.api.CordovaPlugin;
+package ls.co.apos;
+
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
-
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteException;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
-public class CalendarPlugin extends CordovaPlugin {
-	public static final String ACTION_ADD_CALENDAR_ENTRY = "addCalendarEntry";
+import com.smartdevice.aidl.IZKCService;
+
+import ls.co.apos.common.LoadingDialog;
+import ls.co.apos.common.MessageCenter;
+import ls.co.apos.common.MessageType;
+
+public class ZKCServicePlugin extends CordovaPlugin {
 	
-	@Override
-	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		try {
-			if (ACTION_ADD_CALENDAR_ENTRY.equals(action)) { 
-			JSONObject arg_object = args.getJSONObject(0);
-			Intent calIntent = new Intent(Intent.ACTION_EDIT)
-				.setType("vnd.android.cursor.item/event")
-				.putExtra("beginTime", arg_object.getLong("startTimeMillis"))
-				.putExtra("endTime", arg_object.getLong("endTimeMillis"))
-				.putExtra("title", arg_object.getString("title"))
-				.putExtra("description", arg_object.getString("description"))
-				.putExtra("eventLocation", arg_object.getString("eventLocation"));
-		 
-			   this.cordova.getActivity().startActivity(calIntent);
-			   callbackContext.success();
-			   return true;
-			}
-			callbackContext.error("Invalid action");
-			return false;
-		} catch(Exception e) {
-			System.err.println("Exception: " + e.getMessage());
-			callbackContext.error(e.getMessage());
-			return false;
-		} 
-	}
 }
