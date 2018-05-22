@@ -1,9 +1,8 @@
 var exec = cordova.require('cordova/exec');
+var service = "zkcservice";
 
-service = "zkcservice";
-
-exports.onConnect = function(win, fail) {
-	exec(win, fail, service, "onConnect", []);
+exports.bindService = function(win, fail) {
+	exec(win, fail, service, "bindService", []);
 };
 
 exports.onDataReceived = function(handle, win, fail) {
