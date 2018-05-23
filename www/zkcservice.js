@@ -1,5 +1,6 @@
 var exec = cordova.require('cordova/exec');
-var service = "zkcservice";
+
+var service = "ZKCServicePlugin";
 
 exports.bindService = function(win, fail) {
 	exec(win, fail, service, "bindService", []);
