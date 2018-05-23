@@ -28,16 +28,29 @@ import com.smartdevice.aidl.IZKCService;
 public class ZKCServicePlugin extends CordovaPlugin {
 	public static final String TAG = "ZKCServicePlugin";
 	
+	public static String MODULE_FLAG = "module_flag";
+	public static int module_flag = 0;
+	public static int DEVICE_MODEL = 0;
+	private Handler mhanlder; 
+	
 	public static IZKCService mIzkcService;
 	
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException{
-		if ("echo".equals(action)) {
+		if ("bindService".equals(action)) {
 		  echo(args.getString(0), callbackContext);
 		  return true;
 		}
 		return false;
 	}
 	
+	public void bindService() {
+		//com.zkc.aidl.all为远程服务的名称，不可更改
+		//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
+		// 对应的项目所导入的AIDL文件也应该在该包名下
+		Intent intent = new Intent("com.zkc.aidl.all");
+		intent.setPackage("com.smartdevice.aidl");
+		bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
+	}
 	
 	private final ServiceConnection mServiceConnection = new ServiceConnection () {
 		@Override 
