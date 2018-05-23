@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.smartdevice.aidl.IZKCService;
 
 public class ZKCServicePlugin extends CordovaPlugin {
+	
 	private static final String DURATION_LONG = "long";
 	
 	public static final String TAG = "ZKCServicePlugin";
