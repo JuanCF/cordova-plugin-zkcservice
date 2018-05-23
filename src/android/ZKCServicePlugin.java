@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.smartdevice.aidl.IZKCService;
 
 public class ZKCServicePlugin extends CordovaPlugin {
+	private static final String DURATION_LONG = "long";
 	public static final String TAG = "ZKCServicePlugin";
 	
 	public static String MODULE_FLAG = "module_flag";
@@ -39,7 +40,7 @@ public class ZKCServicePlugin extends CordovaPlugin {
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException{
 		if ("bindService".equals(action)) {
 			//echo(args.getString(0), callbackContext);
-			private static final String DURATION_LONG = "long";
+			
 			
 			String message = "I got your hand; can't drown!";
 			String duration = "long";
