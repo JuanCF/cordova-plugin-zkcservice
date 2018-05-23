@@ -21,6 +21,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+
 import android.widget.Toast;
 
 import com.smartdevice.aidl.IZKCService;
@@ -37,9 +38,22 @@ public class ZKCServicePlugin extends CordovaPlugin {
 	
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException{
 		if ("bindService".equals(action)) {
-		  echo(args.getString(0), callbackContext);
-		  return true;
+			//echo(args.getString(0), callbackContext);
+			private static final String DURATION_LONG = "long";
+			
+			String message = "I got your hand; can't drown!";
+			String duration = "long";
+			
+			Toast toast = Toast.makeText(cordova.getActivity(), message,
+			DURATION_LONG.equals(duration) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+			// Display toast
+			toast.show();
+			// Send a positive result to the callbackContext
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+			callbackContext.sendPluginResult(pluginResult);
+			return true;
 		}
+		callbackContext.error("\"" + action + "\" is not a recognized action.");
 		return false;
 	}
 	
