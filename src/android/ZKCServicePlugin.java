@@ -28,6 +28,7 @@ import com.smartdevice.aidl.IZKCService;
 
 public class ZKCServicePlugin extends CordovaPlugin {
 	private static final String DURATION_LONG = "long";
+	
 	public static final String TAG = "ZKCServicePlugin";
 	
 	public static String MODULE_FLAG = "module_flag";
