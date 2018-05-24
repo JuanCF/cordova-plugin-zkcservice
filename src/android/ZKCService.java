@@ -27,8 +27,30 @@ import android.widget.Toast;
 import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
+	@Override
+	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
+		if ("Servicebind".equals(action)) {
+		  echo(args.getString(0), callbackContext);
+		  return true;
+		}
+		return false;
+	}
+
+	private void Servicebind(String msg, CallbackContext callbackContext) {
+		if (msg == null || msg.length() == 0) {
+			callbackContext.error("Empty message!");
+		} else {
+			Toast.makeText(webView.getContext(), msg, Toast.LENGTH_LONG).show();
+			callbackContext.success(msg);
+		}
+	}
+}
+
+/* public class ZKCService extends CordovaPlugin {
 	
-	private static final String DURATION_LONG = "long";
+	
+	
+	/* private static final String DURATION_LONG = "long";
 	
 	public static final String TAG = "ZKCService";
 	
@@ -57,7 +79,7 @@ public class ZKCService extends CordovaPlugin {
 		}
 		callbackContext.error("\"" + action + "\" is not a recognized action.");
 		return false;
-	}
+	} */
 	
 	/* public void bindService(){
 		//com.zkc.aidl.all为远程服务的名称，不可更改
@@ -98,4 +120,4 @@ public class ZKCService extends CordovaPlugin {
 			}
 		}
 	}; */
-}
+} */
