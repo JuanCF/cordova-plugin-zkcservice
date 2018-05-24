@@ -30,8 +30,8 @@ public class ZKCService extends CordovaPlugin {
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
 		if ("Servicebind".equals(action)) {
-		  echo(args.getString(0), callbackContext);
-		  return true;
+			Servicebind(args.getString(0), callbackContext);
+			return true;
 		}
 		return false;
 	}
