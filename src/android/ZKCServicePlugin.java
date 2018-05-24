@@ -21,6 +21,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import org.apache.cordova.PluginResult;
 
 import android.widget.Toast;
 
