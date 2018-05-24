@@ -24,7 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import org.apache.cordova.PluginResult;
 import android.widget.Toast;
 
-//import com.smartdevice.aidl.IZKCService;
+import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
 	@Override
