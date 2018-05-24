@@ -39,7 +39,7 @@
             </service>
         </config-file>
 
-        <source-file src="src/android/ZKCServicePlugin.java" target-dir="src/ls/co/apos" />		
+        <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/apos" />		
         <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl" />
         <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl" />
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
