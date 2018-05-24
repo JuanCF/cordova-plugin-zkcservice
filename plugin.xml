@@ -21,13 +21,13 @@
      <asset src="www/zkcservice.js" target="zkcservice.js" />
     <platform name="android">
        
-        <js-module src="www/zkcservice.js" name="ZKCService">
+        <js-module src="www/ZKCService.js" name="ZKCService">
             <clobbers target="ZKCService" />
         </js-module>
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="zkcservice" >
-                <param name="android-package" value="ls.co.zkcplugin"/>
+                <param name="android-package" value="ls.co.zkcplugin.ZKCService"/>
             </feature>
         </config-file>
         
