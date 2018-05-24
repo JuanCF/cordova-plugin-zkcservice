@@ -27,16 +27,31 @@ import android.widget.Toast;
 import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
+	public static final String TAG = "ZKCService";
+	
+	Log.i(TAG, "Declaring static attributes...");
+	public static String MODULE_FLAG = "module_flag";
+	public static int module_flag = 0;
+	public static int DEVICE_MODEL = 0;
+	public static IZKCService mIzkcService;
+	
+	private Handler mhanlder; 
+
+	
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
-		if ("Servicebind".equals(action)) {
+		if ("ToastIt".equals(action)) {
 			Servicebind(args.getString(0), callbackContext);
+			return true;
+		}
+		else if(("bindZKCService".equals(action)) {
+			bindZKCService(callbackContext);
 			return true;
 		}
 		return false;
 	}
 
-	private void Servicebind(String msg, CallbackContext callbackContext) {
+	private void ToastIt(String msg, CallbackContext callbackContext) {
 		if (msg == null || msg.length() == 0) {
 			callbackContext.error("Empty message!");
 		} else {
@@ -44,6 +59,55 @@ public class ZKCService extends CordovaPlugin {
 			callbackContext.success(msg);
 		}
 	}
+	
+	Log.i(TAG, "Trying to create the connection and bind to the ZKC service.");
+	
+	try { 
+		//statements that may cause an exception
+		private ServiceConnection mServiceConn = new ServiceConnection() {
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+				Log.e("client", "onServiceDisconnected");
+				mIzkcService = null;
+				Toast.makeText(webView.getContext(), "Failed to bind to service.", Toast.LENGTH_LONG).show();
+				//发送消息绑定失败 send message to notify bind fail
+				//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
+			}
+
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				Log.e("client", "onServiceConnected");
+				mIzkcService = IZKCService.Stub.asInterface(service);
+				if(mIzkcService!=null){
+					try {
+						Toast.makeText(BaseActivity.this, "Successfully connected to service.", Toast.LENGTH_LONG).show();
+						//获取产品型号 get product model
+						DEVICE_MODEL = mIzkcService.getDeviceModel();
+						//设置当前模块 set current function module
+						mIzkcService.setModuleFlag(module_flag);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+					//发送消息绑定成功 send message to notify bind success
+					sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
+				}
+			}
+		};
+		
+		public void bindZKCService(CallbackContext callbackContext) {
+			//com.zkc.aidl.all为远程服务的名称，不可更改
+			//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
+			// 对应的项目所导入的AIDL文件也应该在该包名下
+			Intent intent = new Intent("com.zkc.aidl.all");
+			intent.setPackage("com.smartdevice.aidl");
+			bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
+		}
+	
+	} catch (e)‏ {
+		//error handling code 
+		Log.e(TAG, System.out.println(e));
+	}
+	
 }
 
 /* public class ZKCService extends CordovaPlugin {
