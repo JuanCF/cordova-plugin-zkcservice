@@ -29,7 +29,7 @@ import com.smartdevice.aidl.IZKCService;
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
 	
-	private void Loginfo(String message) {
+	public void Loginfo(String message) {
         Log.i(TAG, message);
     }
 	
@@ -49,7 +49,7 @@ public class ZKCService extends CordovaPlugin {
 			ToastIt(args.getString(0), callbackContext);
 			return true;
 		}
-		else if(("bindZKCService".equals(action)) {
+		else if("bindZKCService".equals(action)) {
 			bindZKCService(callbackContext);
 			return true;
 		}
@@ -66,6 +66,7 @@ public class ZKCService extends CordovaPlugin {
 	}
 	
 	Loginfo("Trying to create the connection and bind to the ZKC service.");
+	
 	getBond bond  = new getBond();
     bond.createBond();
 	
