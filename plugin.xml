@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-zkcservice" version="1.0.0">
 
-    <name>ZKCService Plugin</name>
+    <name>ZKCService</name>
 
     <description>Communication from your cordova application to an ZKC SmartDeviceAIDL service application.</description>
 
@@ -39,7 +39,7 @@
             </service>
         </config-file>
 
-        <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/apos" />		
+        <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/zkcplugin" />		
         <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl" />
         <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl" />
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
