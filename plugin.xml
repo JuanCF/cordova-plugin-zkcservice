@@ -7,26 +7,23 @@
     <keywords>Cordova, Android, ZKC900/901, Plugin,POS, Printer</keywords>
     <repo>https://github.com/matsosos/cordova-plugin-zkcservice.git</repo>
     <issue>https://github.com/matsosos/cordova-plugin-zkcservice/issues</issue>
-    
-    <engines>
-        <engine name="cordova" version=">=3.0.0" />
-    </engines>
+   
 	<js-module name="ZKCService" src="www/ZKCService.js">
             <clobbers target="ZKCService" />
     </js-module>
   
     <platform name="android">     
-        <config-file target="config.xml" parent="/*">
+        <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ZKCService" >
                 <param name="android-package" value="ls.co.zkcplugin.ZKCService"/>
             </feature>
         </config-file>
         
         <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/zkcplugin"/>		
-        <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl"/>
-        <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl"/>
+        <!-- <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl"/> -->
+       <!--  <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl"/> -->
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
-        <source-file src="aidl/android/IZKCService.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
-        <source-file src="aidl/android/ICallback.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
+        <!-- <source-file src="aidl/android/IZKCService.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" /> -->
+        <!-- <source-file src="aidl/android/ICallback.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" /> -->
     </platform>
 </plugin>
