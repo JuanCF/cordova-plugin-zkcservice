@@ -3,7 +3,7 @@ var exec = cordova.require('cordova/exec');
 var service = "ZKCService";
 
 exports.ToastIt = function(args, success, error) {
-	exec(success, error, service, "Servicebind", [args]);
+	exec(success, error, service, "ToastIt", [args]);
 };
 
 exports.bindZKCService = function(success, error) {
