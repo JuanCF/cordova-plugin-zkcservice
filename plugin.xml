@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-zkcservice" version="1.0.0">
-
+<plugin id="cordova-plugin-zkcservice" version="1.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>ZKCService</name>
-
     <description>Communication from your cordova application to an ZKC SmartDeviceAIDL service application.</description>
-
     <author>Seboka Matsoso</author>
-
     <license>MIT</license>
-
     <keywords>Cordova, Android, ZKC900/901, Plugin,POS, Printer</keywords>
-
     <repo>https://github.com/matsosos/cordova-plugin-zkcservice.git</repo>
-
     <issue>https://github.com/matsosos/cordova-plugin-zkcservice/issues</issue>
     
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines>
-     <asset src="www/zkcservice.js" target="zkcservice.js" />
-    <platform name="android">
-       
-        <js-module src="www/ZKCService.js" name="ZKCService">
+	<js-module name="ZKCService" src="www/ZKCService.js">
             <clobbers target="ZKCService" />
-        </js-module>
-
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="zkcservice" >
+    </js-module>
+  
+    <platform name="android">     
+        <config-file target="config.xml" parent="/*">
+            <feature name="ZKCService" >
                 <param name="android-package" value="ls.co.zkcplugin.ZKCService"/>
             </feature>
         </config-file>
@@ -39,12 +30,11 @@
             </service>
         </config-file>
 
-        <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/zkcplugin" />		
-        <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl" />
-        <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl" />
+        <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/zkcplugin"/>		
+        <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl"/>
+        <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl"/>
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
         <source-file src="aidl/android/IZKCService.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
         <source-file src="aidl/android/ICallback.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
-        
     </platform>
 </plugin>
