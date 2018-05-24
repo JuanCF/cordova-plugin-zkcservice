@@ -119,5 +119,5 @@ public class ZKCService extends CordovaPlugin {
 				sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
 			}
 		}
-	}; */
+	};
 } */
