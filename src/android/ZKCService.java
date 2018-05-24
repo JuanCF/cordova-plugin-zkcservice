@@ -22,7 +22,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import org.apache.cordova.PluginResult;
-
 import android.widget.Toast;
 
 import com.smartdevice.aidl.IZKCService;
@@ -44,7 +43,6 @@ public class ZKCService extends CordovaPlugin {
 		if ("bindService".equals(action)) {
 			//echo(args.getString(0), callbackContext);
 			
-			
 			String message = "I got your hand; can't drown!";
 			String duration = "long";
 			
@@ -61,7 +59,7 @@ public class ZKCService extends CordovaPlugin {
 		return false;
 	}
 	
-	public void bindService() {
+	/* public void bindService(){
 		//com.zkc.aidl.all为远程服务的名称，不可更改
 		//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
 		// 对应的项目所导入的AIDL文件也应该在该包名下
@@ -99,5 +97,5 @@ public class ZKCService extends CordovaPlugin {
 				sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
 			}
 		}
-	};
+	}; */
 }
