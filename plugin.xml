@@ -27,7 +27,7 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="zkcservice" >
-                <param name="android-package" value="ls.co.zkcplugin.ZKCService"/>
+                <param name="android-package" value="ls.co.zkcplugin"/>
             </feature>
         </config-file>
         
