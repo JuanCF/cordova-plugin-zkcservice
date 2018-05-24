@@ -1,4 +1,4 @@
-package ls.co.apos;
+package ls.co.zkcplugin;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
