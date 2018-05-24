@@ -41,7 +41,7 @@ public class ZKCService extends CordovaPlugin {
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
 		if ("ToastIt".equals(action)) {
-			Servicebind(args.getString(0), callbackContext);
+			ToastIt(args.getString(0), callbackContext);
 			return true;
 		}
 		else if(("bindZKCService".equals(action)) {

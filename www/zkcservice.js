@@ -7,7 +7,7 @@ exports.ToastIt = function(args, success, error) {
 };
 
 exports.bindZKCService = function(success, error) {
-	exec(success, error, service, "Servicebind", []);
+	exec(success, error, service, "bindZKCService", []);
 };
 
 exports.onDataReceived = function(handle, success, error) {
