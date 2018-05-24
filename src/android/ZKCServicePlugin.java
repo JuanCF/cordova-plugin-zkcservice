@@ -27,11 +27,11 @@ import android.widget.Toast;
 
 import com.smartdevice.aidl.IZKCService;
 
-public class ZKCServicePlugin extends CordovaPlugin {
+public class ZKCService extends CordovaPlugin {
 	
 	private static final String DURATION_LONG = "long";
 	
-	public static final String TAG = "ZKCServicePlugin";
+	public static final String TAG = "ZKCService";
 	
 	public static String MODULE_FLAG = "module_flag";
 	public static int module_flag = 0;
@@ -70,31 +70,7 @@ public class ZKCServicePlugin extends CordovaPlugin {
 		bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
 	}
 	
-	private final ServiceConnection mServiceConnection = new ServiceConnection () {
-		@Override 
-		public void onServiceDisconnected ( ComponentName name ) { 
-		// this callback will be invoked when the remote service is dead 		
-			mIsBound = false ; 
-		} 
-		@Override 
-		public void onServiceConnected ( ComponentName name , IBinder service ) { 
-			mIsBound = true ; 
-			mService = IRemoteService .  Stub .  asInterface (service); 
-			try { 
-				mService.registerCallback (mCallback); 
-			} catch ( RemoteException e) { 
-				// TODO Auto-generated catch block 
-				e .  printStackTrace (); 
-			} 
-			try { 
-				mService.createBitmap (); 
-			} catch ( RemoteException e) { 
-				// TODO Auto-generated catch block 
-				e .  printStackTrace (); 
-			} 
-		} 
-	};
-	
+		
 	private ServiceConnection mServiceConn = new ServiceConnection() {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
