@@ -29,9 +29,7 @@ import com.smartdevice.aidl.IZKCService;
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
 	
-	public void Loginfo(String message) {
-        Log.i(TAG, message);
-    }
+	getBond bond  = new getBond();
 	
 	Loginfo("Declaring static attributes...");
 	
@@ -41,7 +39,6 @@ public class ZKCService extends CordovaPlugin {
 	public static IZKCService mIzkcService;
 	
 	private Handler mhanlder; 
-
 	
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
@@ -55,7 +52,7 @@ public class ZKCService extends CordovaPlugin {
 		}
 		return false;
 	}
-
+	
 	private void ToastIt(String msg, CallbackContext callbackContext) {
 		if (msg == null || msg.length() == 0) {
 			callbackContext.error("Empty message!");
@@ -67,12 +64,15 @@ public class ZKCService extends CordovaPlugin {
 	
 	Loginfo("Trying to create the connection and bind to the ZKC service.");
 	
-	getBond bond  = new getBond();
     bond.createBond();
 	
 	public class getBond{
 		public getBond() {}
         
+		public void Loginfo(String message) {
+			Log.i(TAG, message);
+		}
+		
 		public void createBond() {
 			try {
 				//statements that may cause an exception
