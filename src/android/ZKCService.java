@@ -29,9 +29,9 @@ import com.smartdevice.aidl.IZKCService;
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
 	
-	getBond bond  = new getBond();
+	//getBond bond  = new getBond();
 	
-	Loginfo("Declaring static attributes...");
+	//Loginfo("Declaring static attributes...");
 	
 	public static String MODULE_FLAG = "module_flag";
 	public static int module_flag = 0;
@@ -61,10 +61,50 @@ public class ZKCService extends CordovaPlugin {
 			callbackContext.success(msg);
 		}
 	}
+
+	//statements that may cause an exception
+	private ServiceConnection mServiceConn = new ServiceConnection() {
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			Log.e("client", "onServiceDisconnected");
+			mIzkcService = null;
+			Toast.makeText(webView.getContext(), "Failed to bind to service.", Toast.LENGTH_LONG).show();
+			//发送消息绑定失败 send message to notify bind fail
+			//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
+		}
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			Log.e("client", "onServiceConnected");
+			mIzkcService = IZKCService.Stub.asInterface(service);
+			if(mIzkcService!=null){
+				try {
+					Toast.makeText(webView.getContext(), "Successfully connected to service.", Toast.LENGTH_LONG).show();
+					//获取产品型号 get product model
+					DEVICE_MODEL = mIzkcService.getDeviceModel();
+					//设置当前模块 set current function module
+					mIzkcService.setModuleFlag(module_flag);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				//发送消息绑定成功 send message to notify bind success
+				//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
+			}
+		}
+	};
 	
-	Loginfo("Trying to create the connection and bind to the ZKC service.");
+	public void bindZKCService(CallbackContext callbackContext) {
+		//com.zkc.aidl.all为远程服务的名称，不可更改
+		//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
+		// 对应的项目所导入的AIDL文件也应该在该包名下
+		Intent intent = new Intent("com.zkc.aidl.all");
+		intent.setPackage("com.smartdevice.aidl");
+		webView.getContext().bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
+	}
 	
-    bond.createBond();
+	//Loginfo("Trying to create the connection and bind to the ZKC service.");
+	
+    /* bond.createBond();
 	
 	public class getBond{
 		public getBond() {}
@@ -75,45 +115,7 @@ public class ZKCService extends CordovaPlugin {
 		
 		public void createBond() {
 			try {
-				//statements that may cause an exception
-				private ServiceConnection mServiceConn = new ServiceConnection() {
-					@Override
-					public void onServiceDisconnected(ComponentName name) {
-						Log.e("client", "onServiceDisconnected");
-						mIzkcService = null;
-						Toast.makeText(webView.getContext(), "Failed to bind to service.", Toast.LENGTH_LONG).show();
-						//发送消息绑定失败 send message to notify bind fail
-						//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
-					}
-
-					@Override
-					public void onServiceConnected(ComponentName name, IBinder service) {
-						Log.e("client", "onServiceConnected");
-						mIzkcService = IZKCService.Stub.asInterface(service);
-						if(mIzkcService!=null){
-							try {
-								Toast.makeText(BaseActivity.this, "Successfully connected to service.", Toast.LENGTH_LONG).show();
-								//获取产品型号 get product model
-								DEVICE_MODEL = mIzkcService.getDeviceModel();
-								//设置当前模块 set current function module
-								mIzkcService.setModuleFlag(module_flag);
-							} catch (RemoteException e) {
-								e.printStackTrace();
-							}
-							//发送消息绑定成功 send message to notify bind success
-							sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
-						}
-					}
-				};
 				
-				public void bindZKCService(CallbackContext callbackContext) {
-					//com.zkc.aidl.all为远程服务的名称，不可更改
-					//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
-					// 对应的项目所导入的AIDL文件也应该在该包名下
-					Intent intent = new Intent("com.zkc.aidl.all");
-					intent.setPackage("com.smartdevice.aidl");
-					bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
-				}
 			
 			} catch (RuntimeException e)‏ {
 				//error handling code 
@@ -122,7 +124,7 @@ public class ZKCService extends CordovaPlugin {
 		}
 	
 	}
-	
+	 */
 	
 }
 
