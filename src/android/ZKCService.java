@@ -36,6 +36,7 @@ public class ZKCService extends CordovaPlugin {
 	public static String MODULE_FLAG = "module_flag";
 	public static int module_flag = 0;
 	public static int DEVICE_MODEL = 0;
+	public static String SERVICE_VERSION = "version unknown";
 	public static IZKCService mIzkcService;
 	
 	private Handler mhanlder; 
@@ -79,11 +80,14 @@ public class ZKCService extends CordovaPlugin {
 			mIzkcService = IZKCService.Stub.asInterface(service);
 			if(mIzkcService!=null){
 				try {
-					Toast.makeText(webView.getContext(), "Successfully connected to service.", Toast.LENGTH_LONG).show();
+					
 					//获取产品型号 get product model
 					DEVICE_MODEL = mIzkcService.getDeviceModel();
 					//设置当前模块 set current function module
 					mIzkcService.setModuleFlag(module_flag);
+					
+					SERVICE_VERSION = mIzkcService.getServiceVersion();
+					Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
