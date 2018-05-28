@@ -1,5 +1,8 @@
 package ls.co.zkcplugin;
 
+import java.io.File;  
+import java.io.PrintWriter;  
+import java.io.StringWriter;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONObject;
@@ -28,7 +31,7 @@ import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
-	JSONObject result = new JSONObject();
+	
 	//getBond bond  = new getBond();
 	
 	//Loginfo("Declaring static attributes...");
@@ -65,7 +68,6 @@ public class ZKCService extends CordovaPlugin {
 	}
 
 	
-	
 	public void bindZKCService(CallbackContext callbackContext) {
 		//statements that may cause an exception
 		ServiceConnection mServiceConn = new ServiceConnection() {
@@ -94,13 +96,17 @@ public class ZKCService extends CordovaPlugin {
 						
 						SERVICE_VERSION = mIzkcService.getServiceVersion();
 						
+						
 						//result.put("devicemodel",DEVICE_MODEL);
-						result.put("service_v", SERVICE_VERSION);
+						/* result.put("service_v", SERVICE_VERSION); */
 						
 						Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
-						callbackContext.success(result.toString());
-					} catch (RemoteException e) {						
-						callbackContext.success(e.printStackTrace());
+						callbackContext.success(DEVICE_MODEL);
+					} catch (RemoteException e) {
+						StringWriter sw = new StringWriter();
+						PrintWriter pw = new PrintWriter(sw);
+						e.printStackTrace(pw);
+						callbackContext.success(sw.toString());
 					}
 					//发送消息绑定成功 send message to notify bind success
 					//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
