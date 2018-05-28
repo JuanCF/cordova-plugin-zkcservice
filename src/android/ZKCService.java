@@ -28,7 +28,7 @@ import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
-	
+	JSONObject result = new JSONObject();
 	//getBond bond  = new getBond();
 	
 	//Loginfo("Declaring static attributes...");
@@ -36,6 +36,7 @@ public class ZKCService extends CordovaPlugin {
 	public static String MODULE_FLAG = "module_flag";
 	public static int module_flag = 0;
 	public static int DEVICE_MODEL = 0;
+	public static String printer_firmversion;
 	public static String SERVICE_VERSION = "version unknown";
 	public static IZKCService mIzkcService;
 	
@@ -63,41 +64,50 @@ public class ZKCService extends CordovaPlugin {
 		}
 	}
 
-	//statements that may cause an exception
-	private ServiceConnection mServiceConn = new ServiceConnection() {
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			Log.e("client", "onServiceDisconnected");
-			mIzkcService = null;
-			Toast.makeText(webView.getContext(), "Failed to bind to service.", Toast.LENGTH_LONG).show();
-			//发送消息绑定失败 send message to notify bind fail
-			//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
-		}
-
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
-			Log.e("client", "onServiceConnected");
-			mIzkcService = IZKCService.Stub.asInterface(service);
-			if(mIzkcService!=null){
-				try {
-					
-					//获取产品型号 get product model
-					DEVICE_MODEL = mIzkcService.getDeviceModel();
-					//设置当前模块 set current function module
-					mIzkcService.setModuleFlag(module_flag);
-					
-					SERVICE_VERSION = mIzkcService.getServiceVersion();
-					Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-				//发送消息绑定成功 send message to notify bind success
-				//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
-			}
-		}
-	};
+	
 	
 	public void bindZKCService(CallbackContext callbackContext) {
+		//statements that may cause an exception
+		private ServiceConnection mServiceConn = new ServiceConnection() {
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+				Log.e("client", "onServiceDisconnected");
+				mIzkcService = null;
+				Toast.makeText(webView.getContext(), "Failed to connect to service.", Toast.LENGTH_LONG).show();
+				callbackContext.error("Failed to connect to service.");
+				//发送消息绑定失败 send message to notify bind fail
+				//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
+			}
+			
+			
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				Log.e("client", "onServiceConnected");
+				mIzkcService = IZKCService.Stub.asInterface(service);
+				if(mIzkcService!=null){
+					try {
+						
+						//获取产品型号 get product model
+						DEVICE_MODEL = mIzkcService.getDeviceModel();
+						//设置当前模块 set current function module
+						mIzkcService.setModuleFlag(module_flag);
+						
+						SERVICE_VERSION = mIzkcService.getServiceVersion();
+						
+						result.put("devicemodel",DEVICE_MODEL);
+						result.put("service_v", SERVICE_VERSION);
+						
+						Toast.makeText(webView.getContext(), "Device Model: "+DEVICE_MODEL, Toast.LENGTH_LONG).show();
+						callbackContext.success(result.toString());
+					} catch (RemoteException e) {						
+						callbackContext.success(e.printStackTrace(););
+					}
+					//发送消息绑定成功 send message to notify bind success
+					//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
+				}
+			}
+		};
+		
 		//com.zkc.aidl.all为远程服务的名称，不可更改
 		//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
 		// 对应的项目所导入的AIDL文件也应该在该包名下
