@@ -94,10 +94,10 @@ public class ZKCService extends CordovaPlugin {
 						
 						SERVICE_VERSION = mIzkcService.getServiceVersion();
 						
-						result.put("devicemodel",DEVICE_MODEL);
+						//result.put("devicemodel",DEVICE_MODEL);
 						result.put("service_v", SERVICE_VERSION);
 						
-						Toast.makeText(webView.getContext(), "Device Model: "+DEVICE_MODEL, Toast.LENGTH_LONG).show();
+						Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
 						callbackContext.success(result.toString());
 					} catch (RemoteException e) {						
 						callbackContext.success(e.printStackTrace(););
