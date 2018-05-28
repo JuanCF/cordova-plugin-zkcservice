@@ -68,7 +68,7 @@ public class ZKCService extends CordovaPlugin {
 	
 	public void bindZKCService(CallbackContext callbackContext) {
 		//statements that may cause an exception
-		private ServiceConnection mServiceConn = new ServiceConnection() {
+		ServiceConnection mServiceConn = new ServiceConnection() {
 			@Override
 			public void onServiceDisconnected(ComponentName name) {
 				Log.e("client", "onServiceDisconnected");
@@ -100,7 +100,7 @@ public class ZKCService extends CordovaPlugin {
 						Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
 						callbackContext.success(result.toString());
 					} catch (RemoteException e) {						
-						callbackContext.success(e.printStackTrace(););
+						callbackContext.success(e.printStackTrace());
 					}
 					//发送消息绑定成功 send message to notify bind success
 					//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
