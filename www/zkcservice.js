@@ -6,8 +6,12 @@ exports.ToastIt = function(args, success, error) {
 	exec(success, error, service, "ToastIt", [args]);
 };
 
-exports.bindZKCService = function(success, error) {
-	exec(success, error, service, "bindZKCService", []);
+exports.printAirtime = function(args, success, error) {
+	exec(success, error, service, "printAirtime", [args]);
+};
+
+exports.bindZKCService = function(args, success, error) {
+	exec(success, error, service, "bindZKCService", [args]);
 };
 
 exports.onDataReceived = function(handle, success, error) {

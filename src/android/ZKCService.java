@@ -26,7 +26,8 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import org.apache.cordova.PluginResult;
 import android.widget.Toast;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
@@ -40,8 +41,12 @@ public class ZKCService extends CordovaPlugin {
 	public static int module_flag = 0;
 	public static int DEVICE_MODEL = 0;
 	public static String printer_firmversion;
+	public static String printer_status;
+	public static String printer_available;
 	public static String SERVICE_VERSION = "version unknown";
 	public static IZKCService mIzkcService;
+	
+	public static String JSON_DATA;
 	
 	private Handler mhanlder; 
 	
@@ -53,6 +58,10 @@ public class ZKCService extends CordovaPlugin {
 		}
 		else if("bindZKCService".equals(action)) {
 			bindZKCService(callbackContext);
+			return true;
+		}
+		else if("printAirtime".equals(action)) {
+			printAirtime(args.getString(0), callbackContext);
 			return true;
 		}
 		return false;
@@ -67,6 +76,111 @@ public class ZKCService extends CordovaPlugin {
 		}
 	}
 
+	public void printAirtime(String strData, CallbackContext callbackContext){
+		//Retrieve Airtime receipt data.
+		JSON_DATA = strData;
+		try{
+			JSONObject obj = new JSONObject(JSON_DATA);
+			JSONArray airtimedata = obj.getJSONArray("airtimedata");
+			int datalen = airtimedata.length();
+			
+			//statements that may cause an exception
+			
+			ServiceConnection mServiceConn = new ServiceConnection() {
+				@Override
+				public void onServiceDisconnected(ComponentName name) {
+					Log.e("client", "onServiceDisconnected");
+					mIzkcService = null;
+					Toast.makeText(webView.getContext(), "Failed to connect to service.", Toast.LENGTH_LONG).show();
+					callbackContext.error("Failed to connect to service.");
+					//发送消息绑定失败 send message to notify bind fail
+					//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
+				}
+							
+				@Override
+				public void onServiceConnected(ComponentName name, IBinder service) {
+					Log.e("client", "onServiceConnected");
+					mIzkcService = IZKCService.Stub.asInterface(service);
+					if(mIzkcService!=null){
+						try {
+							
+							//获取产品型号 get product model
+							DEVICE_MODEL = mIzkcService.getDeviceModel();
+							//设置当前模块 set current function module
+							mIzkcService.setModuleFlag(module_flag);
+							
+							SERVICE_VERSION = mIzkcService.getServiceVersion();
+							
+							
+							printer_status = mIzkcService.getPrinterStatus();						
+							if(mIzkcService.checkPrinterAvailable() == true){
+								printer_available = "Airtime data sent to printer.";
+								
+								//Begin print airtime voucher.
+								mIzkcService.printTextAlgin("***** Receipt *****",0,2,1);
+								mIzkcService.generateSpace();
+								mIzkcService.setAlignment(0);
+								mIzkcService.printTextAlgin("Smartbill Platform",0,2,1);
+								DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+								LocalDateTime now = LocalDateTime.now();							
+								mIzkcService.printTextAlgin("Time: "+dtf.format(now),0,2,1);
+								mIzkcService.generateSpace();
+								mIzkcService.generateSpace();
+								
+								for (int i = 0; i < datalen; ++i){
+									try{
+									JSONObject receipt = airtimedata.getJSONObject(i);
+									mIzkcService.printGBKText(receipt.getString("business"));
+									mIzkcService.printGBKText(receipt.getString("operator"));
+									mIzkcService.printGBKText(receipt.getString("airtime"));
+									mIzkcService.printGBKText(receipt.getString("amount"));
+									mIzkcService.printGBKText(receipt.getString("helpline"));
+									mIzkcService.printGBKText(receipt.getString("howto"));
+									}catch (JSONException e){
+										e.printStackTrace();
+									}
+									
+								}
+								
+								mIzkcService.generateSpace();
+								mIzkcService.generateSpace();
+								mIzkcService.generateSpace();
+								mIzkcService.printTextAlgin("Proudly by:",0,2,0);
+								mIzkcService.printTextAlgin("Venus Dawn Technologies",0,2,1);
+								mIzkcService.printTextAlgin("www.venusdawn.co.ls",0,2,1);
+								
+								//End of airtime voucher.
+							}else{
+								printer_available = "Printer not initialized or unavailable.";
+							}
+												
+							//result.put("devicemodel",DEVICE_MODEL);
+							/* result.put("service_v", SERVICE_VERSION); */
+							
+							//Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
+							callbackContext.success(printer_available);
+						} catch (RemoteException e) {
+							StringWriter sw = new StringWriter();
+							PrintWriter pw = new PrintWriter(sw);
+							e.printStackTrace(pw);
+							callbackContext.success(sw.toString());
+						}
+						//发送消息绑定成功 send message to notify bind success
+						//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
+					}
+				}
+			};
+			
+			//com.zkc.aidl.all为远程服务的名称，不可更改
+			//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
+			// 对应的项目所导入的AIDL文件也应该在该包名下
+			Intent intent = new Intent("com.zkc.aidl.all");
+			intent.setPackage("com.smartdevice.aidl");
+			webView.getContext().bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
+		}catch (JSONException e){
+			e.printStackTrace();
+		}
+	}
 	
 	public void bindZKCService(CallbackContext callbackContext) {
 		//statements that may cause an exception
@@ -97,11 +211,25 @@ public class ZKCService extends CordovaPlugin {
 						SERVICE_VERSION = mIzkcService.getServiceVersion();
 						
 						
+						printer_status = mIzkcService.getPrinterStatus();						
+						if(mIzkcService.checkPrinterAvailable() == true){
+							printer_available = "Available";
+							mIzkcService.printGBKText("I have been through the fire, I ran the race and I won.");
+							mIzkcService.generateSpace();
+							mIzkcService.generateSpace();
+							mIzkcService.generateSpace();
+							mIzkcService.generateSpace();
+						}else{
+							printer_available = "Unavailable";
+						}
+						
+						
+					
 						//result.put("devicemodel",DEVICE_MODEL);
 						/* result.put("service_v", SERVICE_VERSION); */
 						
-						Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
-						callbackContext.success(DEVICE_MODEL);
+						//Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
+						callbackContext.success(printer_available);
 					} catch (RemoteException e) {
 						StringWriter sw = new StringWriter();
 						PrintWriter pw = new PrintWriter(sw);
