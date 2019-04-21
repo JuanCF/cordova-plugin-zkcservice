@@ -8,7 +8,7 @@
     <repo>https://github.com/matsosos/cordova-plugin-zkcservice.git</repo>
     <issue>https://github.com/matsosos/cordova-plugin-zkcservice/issues</issue>
    
-	<js-module name="ZKCService" src="www/ZKCService.js">
+	<js-module name="ZKCService" src="www/zkcservice.js">
             <clobbers target="ZKCService" />
     </js-module>
   
