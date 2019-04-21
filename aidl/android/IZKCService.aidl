@@ -4,165 +4,166 @@ import com.smartdevice.aidl.ICallBack;
 import android.graphics.Bitmap;
 import android.content.Context;
 
-interface IZKCService{
+interface IZKCService
+{
 
 	/**
-	* Set the current function module
-	* @param cb:	Implement callbacks for the ICallback interface
+	* 设置当前功能模块
+	* @param cb:	实现ICallback接口的回调
 	*/
 	boolean setModuleFlag(int module);
 	/************************************************************
 	 *                                                        ***
-	 *                printers                                ***
+	 *                 打印机                                 ***
 	 *                                                        ***
 	 ************************************************************/
 
 	 /**
-	* register
-	* @param cb:	Implement callbacks for the ICallback interface
+	* 注册
+	* @param cb:	实现ICallback接口的回调
 	*/
 	void registerCallBack(String flag,ICallBack callback);
 
 	/**
-	* Cancellation callback
-	* @param cb:	Implement callbacks for the ICallback interface
+	* 注销回调
+	* @param cb:	实现ICallback接口的回调
 	*/
 	void unregisterCallBack(String flag,ICallBack callback);
 
 	/**
-	* Stop callback tasks
+	* 停止回调任务
 	*/
 	void stopRunningTask();
 
 	/**
-	* Determine if the callback task is running
+	* 判断回调任务是否正在运行
 	*/
 	boolean isTaskRunning();
 
 	/**
-	* Get Printer Firmware Version
+	* 获取打印机固件版本
 	*/
 	void getFirmwareVersion();
 
 	/**
-	* Get ZKCService service version
+	* 获取ZKCService服务版本
 	*/
 	String getServiceVersion();
 
 	/**
-	* Get ZKCService service version
+	* 获取ZKCService服务版本
 	*/
 	int getDeviceModel();
 
 	/**
-	 * Initialize the printer
+	 * 初始化打印机
 	 */
 	void printerInit();
 
 	/**
-	* Get printer status
+	* 获取打印机状态
 	*/
 	String getPrinterStatus();
 
 	/**
-	* Printer self-test, printer prints self-test page
+	* 打印机自检，打印机会打印自检页
 	*/
 	void printerSelfChecking();
 
 	/**
-	* Check if the printer is idle
+	* 检查打印机是否空闲
 	*/
 	boolean checkPrinterAvailable();
 
 	/**
-	* Print using original instructions.
+	* 使用原始指令打印
 	* @param data 指令
 	* @param callback  结果回调
 	*/
 	void sendRAWData(String flag,in byte[] data);
 
 	/**
-    * Check if the printer is idle
+    * 检查打印机是否空闲
     */
     boolean setPrinterLanguage(String lang, int langCode);
 
 	/**
-	* Set the alignment mode to affect printing later, unless initialized
-	* @param alignment:	Alignment 0--left, 1--center, 2--right
-	* @param callback  Result callback
+	* 设置对齐模式，对之后打印有影响，除非初始化
+	* @param alignment:	对齐方式 0--居左, 1--居中, 2--居右
+	* @param callback  结果回调
 	*/
 	void setAlignment(int alignment);
 
 	/**
-	* Set the print font to affect printing later unless initialized
-	* (Currently only two fonts are supportedCurrently only two fonts are supported)
-	* @param typeface:	Font Type 0--ASCII(12*24) Chinese Character(24*24),1--ASCII(8*16) Chinese Character(16*16)
+	* 设置打印字体, 对之后打印有影响，除非初始化
+	* (目前只支持两种字体)
+	* @param typeface:	字体类型 0--ASCII(12*24) 汉字（24*24），1--ASCII(8*16) 汉字（16*16）
 	*/
 	void setTypeface(int type);
 
 	/**
-	*Setting the font size has an effect on printing later unless initialized
-	* Adjusting the font size will affect the character width, and the number of characters per line will also change.
-	* @param fontsize: Font size type 0-- Characters are normal: Not zoomed in, 1--characters 2 times tall: Zoom in portrait,
-	* 2-character 2x width: horizontal zoom, 3-character 2x zoom
+	* 设置字体大小, 对之后打印有影响，除非初始化
+	* 调整字体大小会影响字符宽度，每行字符数量也会随之改变，
+	* @param fontsize:	字体大小类型 0--字符正常： 不放大，1--字符 2 倍高：纵向放大，
+	*                                2--字符 2 倍宽：横向放大，3--字符 2 倍整体放大
 	*/
 	void setFontSize(int type);
 
 	/**
-	* Print text, word width full line wrap typesetting, not full line print unless forced line break
-	* @param text:	Translation error
+	* 打印文字，文字宽度满一行自动换行排版，不满一整行不打印除非强制换行
+	* @param text:	要打印的文字字符串
 	*/
 	void printGBKText(String text);
 
 	/**
-	* Print text, word width full line wrap typesetting, not full line print unless forced line break
-	* @param text:	The text string to be printed
+	* 打印文字，文字宽度满一行自动换行排版，不满一整行不打印除非强制换行
+	* @param text:	要打印的文字字符串
 	*/
 	void printUnicodeText(String text);
 
 	/**
-	* Print the text of the specified font. The font setting is valid only for this time.
-	* @param text:			To print text
-	* @param typeface:		Font type
-	* @param fontsize:		Font size type
+	* 打印指定字体的文本，字体设置只对本次有效
+	* @param text:			要打印文字
+	* @param typeface:		字体类型
+	* @param fontsize:		字体大小	类型
 	*/
 	void printTextWithFont(String text, int type, int size);
 
 	/**
-	* Print the text of the specified font, font size, and alignment. The font setting is valid only for this time.
-	* @param text:			To print text
-	* @param typeface:		Font type
-	* @param fontsize:		Font size type
-	* @param alginStyle:	Alignment (0 left, 1 center, 2 right)
+	* 打印指定字体,字号、对齐方式的文本，字体设置只对本次有效
+	* @param text:			要打印文字
+	* @param typeface:		字体类型
+	* @param fontsize:		字体大小	类型
+	* @param alginStyle:	对齐方式(0居左, 1居中, 2居右)
 	*/
 	void printTextAlgin(String text, int type, int size, int alginStyle);
 
 	/**
-	* Print a row of the table, you can specify the column width, alignment
-	* @param colsTextArr   Column array of text strings
-	* @param colsWidthArr  Column width array (calculated in English characters, each Chinese character occupies two English characters, each width is greater than 0)
-	* @param colsAlign	        Column alignment (0 left, 1 center, 2 right)
-	* Remarks: The length of the array of three parameters should be the same. If the width of colsText[i] is greater than colsWidth[i], the text is wrapped.
+	* 打印表格的一行，可以指定列宽、对齐方式
+	* @param colsTextArr   各列文本字符串数组
+	* @param colsWidthArr  各列宽度数组(以英文字符计算, 每个中文字符占两个英文字符, 每个宽度大于0)
+	* @param colsAlign	        各列对齐方式(0居左, 1居中, 2居右)
+	* 备注: 三个参数的数组长度应该一致, 如果colsText[i]的宽度大于colsWidth[i], 则文本换行
 	*/
 	void printColumnsText(in String[] colsTextArr, in int[] colsWidthArr, in int[] colsAlign);
 
 	/**
-	* Print picture
-	* @param bitmap: 	Picture bitmap object
+	* 打印图片
+	* @param bitmap: 	图片bitmap对象
 	*/
 	void printBitmap(in Bitmap bitmap);
 
 	/**
-	* Print image (with alignment)
-	* @param bitmap: 	Picture bitmap object
-	* @parm position:   Image Location 0--left, 1--center, 2--right
+	* 打印图片（含对齐方式）
+	* @param bitmap: 	图片bitmap对象
+	* @parm position:   图片位置 0--居左，1--居中，2--居右
 	*/
 	void printBitmapAlgin(in Bitmap bitmap, int width, int height,int position);
 
 	/**
-	* Create a one-dimensional barcode picture
-	* @param data: 		Barcode data
-	* @param symbology: 	Barcode type
+	* 创建一维条码图片
+	* @param data: 		条码数据
+	* @param symbology: 	条码类型
 	*    0 -- UPC-A，
 	*    1 -- UPC-E，
 	*    2 -- JAN13(EAN13)，
@@ -172,120 +173,120 @@ interface IZKCService{
 	*    6 -- CODABAR，
 	*    7 -- CODE93，
 	*    8 -- CODE128
-	* @param height: 		Barcode height, value 1 to 255, default 162
-	* @param width: 		Barcode width, values 0 to 5, default 3
-	* @param displayText:	Whether to display text
+	* @param height: 		条码高度, 取值1到255, 默认162
+	* @param width: 		条码宽度, 取值0至5, 默认3
+	* @param displayText:	是否显示文字
 	*/
 	Bitmap createBarCode(String data, int codeFormat, int width, int height, boolean displayText);
 
 	/**
-	* Create a 2D barcode picture
-	* @param data:			QR code data
-	* @param modulesize:	Two-dimensional block size (unit: point, value 1 to 16)
+	* 创建二维条码图片
+	* @param data:			二维码数据
+	* @param modulesize:	二维码块大小(单位:点, 取值 1 至 16 )
 	*/
 	Bitmap createQRCode(String data, int width, int height);
 
 	/********************************
-	********Date Added: 2017/03/14******
+	********添加日期 2017/03/14******
 	*********************************/
 
 	/*
-	*Print stickers to get clearance
+	*打印不干胶获取间隙
 	*/
 	void generateSpace();
 
 	/********************************
-	********Date added 2017/04/25******
+	********添加日期 2017/04/25******
 	*********************************/
 
 	/*
-	*Print picture (grayscale)
+	*打印图片（灰度）
 	*/
 	boolean printImageGray(in Bitmap bitmap);
 
 	/*
-	*Print picture (raster)
+	*打印图片（光栅）
 	*/
 	boolean printRasterImage(in Bitmap bitmap);
 
 	/*
-	*Print UNINCODE (raster)
+	*打印UNINCODE（光栅）
 	*/
 	boolean printUnicode_1F30(String textStr);
 
 	/*
-	*Set the print language
+	*设置打印语言
 	*/
-	void setPrintLanguage(String language);
+	//void setPrintLanguage(String language);
 
 	/*
-	*Get the firmware version 1
+	*获取固件版本
 	*/
 	String getFirmwareVersion1();
 
 	/*
-	*Get the firmware version 2
+	*获取固件版本
 	*/
 	String getFirmwareVersion2();
 
 	/*
-	*Specify print bar code
+	*指定打印条码
 	*/
-//	boolean printBarCode(String content);
+	boolean printBarCode(String content);
 
 	/*
-	*Specify to print two-dimensional code
+	*指定打印二维码
 	*/
-//	boolean printQrCode(String content);
+	boolean printQrCode(String content);
 
 
 
 	/************************************************************
 	 *                                                        ***
-	 *                Customer Display                        ***
+	 *                 客显屏                                 ***
 	 *                                                        ***
 	 ************************************************************/
 
 	 /**
-	 * Control panel backlight power
-	 * @param btFlg Control backlight brightness 0===“Light; 1===” is off
+	 * 控制屏背光电源
+	 * @param btFlg 控制背光亮度 0===》亮；1===》不亮
 	 */
 
 	 void openBackLight(int btFlg);
 
 	 /**
-	 *  Display color pictures, unlimited format
-	 * @param bitmapSrc Display picture bitmap
+	 *  显示彩色图片，图片格式不限
+	 * @param bitmapSrc 显示图片位图
 	 */
 
 	 boolean showRGB565Image(in Bitmap bitmapSrc);
 
 	 /**
-	 *  Display color pictures, unlimited format
-	 * @param path Picture path
+	 *  显示彩色图片，图片格式不限
+	 * @param path 图片路径
 	 */
 
 	 boolean showRGB565ImageByPath(String path);
 
 	 /**
-	 * Specify a location to display color pictures, unlimited format
+	 * 指定位置显示彩色图片，图片格式不限
 	 * @param bitmapSrc
-	 *            image
+	 *            图片
 	 * @param x
-	 *            image
+	 *            起点X坐标
 	 * @param y
-	 *            Starting point Y coordinate
+	 *            起点Y坐标
 	 * @param width
-	 *            Display width
+	 *            显示宽度
 	 * @param height
-	 *            Display height
+	 *            显示高度
 	 * @return
 	 */
 
 	 boolean showRGB565ImageLocation(in Bitmap bitmapSrc,int x, int y, int width, int height);
 
 	 /**
-	 * Update screen LOGO
+	 * 更新屏幕LOGO
 	 * @param bitmapSrc
 	 * @return
 	 */
@@ -293,7 +294,7 @@ interface IZKCService{
 	 boolean updateLogo(in Bitmap bitmapSrc);
 
 	 /**
-	 * Update screen LOGO
+	 * 更新屏幕LOGO
 	 * @param path
 	 * @return
 	 */
@@ -301,7 +302,7 @@ interface IZKCService{
 	 boolean updateLogoByPath(String path);
 
 	 /**
-	 * Display two-color pictures
+	 * 显示双色图片
 	 *
 	 * @param BackColor
 	 * @param ForeColor
@@ -312,7 +313,7 @@ interface IZKCService{
 	 boolean showDotImage(int BackColor, int ForeColor,in Bitmap bitmapSrc);
 
 	  /**
-	 * The screen shows a color picture in the center
+	 * 屏幕中心显示彩色图片
 	 * @param bitmapSrc
 	 * @return
 	 */
@@ -321,209 +322,209 @@ interface IZKCService{
 
 	 /************************************************************
 	 *                                                        ***
-	 *                	PSAM card                                ***
+	 *                	PSAM卡                                ***
 	 *                                                        ***
 	 ************************************************************/
 
 	/**
-	* Turn on PSAM power
+	* 打开PSAM电源
 	*/
 
 	int Open();
 
 	/**
-	* Turn off the PSAM power
+	* 关闭PSAM电源
 	*/
 
 	int Close(long fd);
 
 	/**
-	* Open/close GPIO port
+	* 打开/关闭GPIO口
 	* @return  true--success; false--fail
 	*/
 
 	boolean setGPIO(int io,int status);
 
 	/**
-	* Open the specified PSAM card
-	* @param carPositin: PSAM card location
-	* @return Returns 0 success
+	* 打开指定PSAM卡
+	* @param carPositin: PSAM卡位置
+	* @return 返回0成功
 	*/
 
 	int openCard(int carPositin);
 
 	/**
-	 * Turn on device 2
+	 * 打开设备2
 	 *
-	 * @param Card slot number
+	 * @param 卡槽编号
 	 */
 
 	int openCard2(inout int[] fd,int slotno);
 
 	/**
-	 * Turn on device 3
+	 * 打开设备3
 	 *
-	 * @param Card slot number
+	 * @param 卡槽编号
 	 */
 
 	int openCard3(long fd,int slotno);
 
 	/**
-	* Close the open PSAM card
-	* @return Returns 0 success
+	* 关闭打开的PSAM卡
+	* @return 返回0成功
 	*/
 	int CloseCard();
 
 	/**
-	 *Function: Turn off device 2
-	 *c parameter v2 true: device 3/device 2
-	 *Parameters: [in]unsigned long fd passed in device handle to close
-	 *Return value: correct 0, error non-zero
+	 *功能：	关闭设备2
+	 *c参数 v2 true:设备3/设备2
+	 *参数： [in]unsigned long fd传入要关闭的设备句柄
+	 *返回值：正确为0，错误为非0
 	*/
 
 	int CloseCard2(long fd, boolean v2);
 
 	/**
-	* Reset the currently open PSAM card
-	* @param power: The specified voltage size
-	* @return Returns the PSAM card number as a byte array
+	* 重置当前打开的PSAM卡
+	* @param power: 指定的电压大小
+	* @return 以字节数组返回PSAM卡号
 	*/
 	byte[] ResetCard(int power);
 
 	/**
-	 *Function: Device Reset 2
-	 *Parameters: [in]unsigned long fd passed in device handle to close
-	 *       [out]unsigned char *atr outgoing device reset information
-	 *       [in/out]int *atrLen Outgoing device reset message length
-	 *Return value: correct 0, error non-zero
+	 *功能：	设备复位2
+	 *参数： [in]unsigned long fd传入要关闭的设备句柄
+	 *       [out]unsigned char *atr 传出设备复位信息
+	 *       [in/out]int *atrLen 传出设备复位信息长度
+	 *返回值：正确为0，错误为非0
 	*/
 
 	int ResetCard2(long fd, inout byte[] atr,inout int[] atrLen);
 
 	/**
-	 *Function: Device Reset 3
-	 *Parameters: [in]unsigned long fd passed in device handle to close
-	 *       [out]unsigned char *atr outgoing device reset information
-	 *       [in/out]int *atrLen Outgoing device reset message length
-	 *Return value: correct 0, error non-zero
+	 *功能：	设备复位3
+	 *参数： [in]unsigned long fd传入要关闭的设备句柄
+	 *       [out]unsigned char *atr 传出设备复位信息
+	 *       [in/out]int *atrLen 传出设备复位信息长度
+	 *返回值：正确为0，错误为非0
 	*/
 
 	byte[] ResetCard3(long fd,int slotno,int pw);
 
 	/**
-	* Send APDU Command to Current PSAM Card
-	* @param apdu: APDU command
-	* @return Return the command result as a byte array
+	* 给当前PSAM卡发送APDU命令
+	* @param apdu: APDU命令
+	* @return 以字节数组返回命令结果
 	*/
 	byte[] CardApdu(in byte[] apdu);
 
 	/**
-	 *Function: Send APDU Instruction 2
-	 *parameter： [in]unsigned long fd incoming device handle
-	 *     [in]unsigned char *apdu Apdu command to send
-	 *     [in]int apduLength The length of the apdu instruction to be sent
-	 *     [out]unsigned char*response Return data content
-	 *     [in/out]int* respLength Return data length
-	 *Return value: correct 0, error non-zero
-	 *Note: This interface does not perform automatic response data acquisition (ie, this interface does not automatically send "00c0" as a response command)
+	 *功能：	发送APDU指令2
+	 *参数： [in]unsigned long fd传入设备句柄
+	 *     [in]unsigned char *apdu 要发送的apdu指令
+	 *     [in]int apduLength 要发送的apdu指令长度
+	 *     [out]unsigned char*response 返回数据内容
+	 *     [in/out]int* respLength 返回数据长度
+	 *返回值：正确为0，错误为非0
+	 *注意：此接口不执行自动取响应数据（即此接口不自动发送“00c0”这种取响应指令）
 	*/
 
 	int CardApdu2(long fd, in byte[] apdu,int apduLength, inout byte[] response,inout int[] respLength);
 
 	/**
-	 *Function: Send APDU instruction 3
-	 *parameter： [in]unsigned long fdIncoming device handle
-	 *     [in]unsigned char *apdu Apdu command to send
-	 *     [in]int apduLength The length of the apdu instruction to be sent
-	 *     [out]unsigned char*response Return data content
-	 *     [in/out]int* respLength Return data length
-	 *Return value: correct 0, error non-zero
-	 *Note: This interface does not perform automatic response data acquisition (ie, this interface does not automatically send "00c0" as a response command)
+	 *功能：	发送APDU指令3
+	 *参数： [in]unsigned long fd传入设备句柄
+	 *     [in]unsigned char *apdu 要发送的apdu指令
+	 *     [in]int apduLength 要发送的apdu指令长度
+	 *     [out]unsigned char*response 返回数据内容
+	 *     [in/out]int* respLength 返回数据长度
+	 *返回值：正确为0，错误为非0
+	 *注意：此接口不执行自动取响应数据（即此接口不自动发送“00c0”这种取响应指令）
 	*/
 
 	byte[] CardApdu3(long fd, in byte[] apdu,int apduLength);
 
 	/************************************************************
 	 *                                                        ***
-	 *                	scanning                                  ***
+	 *                	扫描                                  ***
 	 *                                                        ***
 	 ************************************************************/
 
 	/**
-	* Open scan
-	* @param status: true:Open; false: close
+	* 打开扫描
+	* @param status: true:打开；false:关闭
 	*/
 	void openScan(boolean status);
 
 	/**
-	* scanning
+	* 扫描
 	*/
 	void scan();
 
 	/**
-	* Add a return at the end of the data
-	* @param status: True: append; false: not append
+	* 数据末尾追加回车
+	* @param status: true:追加；false:不追加
 	*/
 	void dataAppendEnter(boolean  status);
 
 	/**
-	* Scan success tone
-	* @param status:  true: need; false: no
+	* 扫描成功提示音
+	* @param status:  true:需要；false:不需要
 	*/
 	void appendRingTone(boolean status);
 
 	/**
-	* Continuous scan
-	* @param status: true: need; false: no
+	* 连续扫描
+	* @param status: true:需要；false:不需要
 	*/
 	void continueScan(boolean status);
 
 	/**
-	* Scan code repeat prompt
-	* @param status: true: need; false: no
+	* 扫码重复提示
+	* @param status: true:提示；false:不提示
 	*/
 	void scanRepeatHint(boolean status);
 
 	/**
-	* reset
-	* @param status: true:Settings take effect; false: settings do not take effect
+	* 恢复出厂设置
+	* @param status: true:设置生效；false:设置不生效
 	*/
 	void recoveryFactorySet(boolean status);
 
 	/**
-	* Send scan instructions
-	* @param byte[]Command data sent
-	* @return Received results
+	* 发送扫描指令
+	* @param byte[] 发送的指令数据
+	* @return 接收的结果
 	*/
 	byte[] sendCommand(in byte[] buffer);
 
 	/**
-	* Can you scan normally?
-	* @return true:Scan is turned on; false: Scan is turned off；
+	* 是否可以正常扫描
+	* @return true:扫描已打开；false:扫描已关闭；
 	*/
 	boolean isScanning();
 
 	/**
-	* Get ID information
-	* @return ID information
+	* 获取身份证信息
+	* @return 身份证信息
 	*/
 	String getIdentifyInfo();
 
 	/**
-	* Turn on the power
-	* @return ID information
+	* 打开电源
+	* @return 身份证信息
 	*/
 	boolean turnOn();
 
 	/**
-	* Disconnect the power
-	* @return ID information
+	* 断开电源
+	* @return 身份证信息
 	*/
 	boolean turnOff();
 
 	/**
-	* Disconnect the power
-	* @return ID information
+	* 断开电源
+	* @return 身份证信息
 	*/
 	Bitmap getHeader();
 

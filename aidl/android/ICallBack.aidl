@@ -3,9 +3,10 @@
 */
 package com.smartdevice.aidl;
 
-interface ICallBack{
+interface ICallBack
+{
 	/**
-	 *Receive callback messages
+	 *接收回调消息
 	 */
 	void onReturnValue(in byte[] data, int size);
 }

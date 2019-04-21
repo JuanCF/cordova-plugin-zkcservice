@@ -4,7 +4,7 @@
     <description>Communication from your cordova application to an ZKC SmartDeviceAIDL service application.</description>
     <author>Seboka Matsoso</author>
     <license>MIT</license>
-    <keywords>Cordova, Android, ZKC900/901, Plugin,POS, Printer</keywords>
+    <keywords>Cordova, Android, ZKC3506, Handheld with thermal printer</keywords>
     <repo>https://github.com/matsosos/cordova-plugin-zkcservice.git</repo>
     <issue>https://github.com/matsosos/cordova-plugin-zkcservice/issues</issue>
    
@@ -21,9 +21,9 @@
         
         <source-file src="src/android/ZKCService.java" target-dir="src/ls/co/zkcplugin"/>		
         <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl"/>
-        <source-file src="aidl/android/ICallback.aidl" target-dir="src/com/smartdevice/aidl"/>
+        <source-file src="aidl/android/ICallBack.aidl" target-dir="src/com/smartdevice/aidl"/>
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
         <source-file src="aidl/android/IZKCService.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
-        <source-file src="aidl/android/ICallback.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
+        <source-file src="aidl/android/ICallBack.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
     </platform>
 </plugin>
