@@ -23,7 +23,7 @@
         <source-file src="aidl/android/IZKCService.aidl" target-dir="src/com/smartdevice/aidl"/>
         <source-file src="aidl/android/ICallBack.aidl" target-dir="src/com/smartdevice/aidl"/>
         <!-- Hack for Cordova android 7, not correctly loading aidl -->
-        <source-file src="aidl/android/IZKCService.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
-        <source-file src="aidl/android/ICallBack.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
+       <!-- <source-file src="aidl/android/IZKCService.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />
+        <source-file src="aidl/android/ICallBack.aidl" target-dir="app/src/main/aidl/com/smartdevice/aidl" />-->
     </platform>
 </plugin>
