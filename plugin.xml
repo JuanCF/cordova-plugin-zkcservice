@@ -9,7 +9,7 @@
   <issue>https://github.com/matsosos/cordova-plugin-zkcservice/issues</issue>
 
   <js-module name="ZKCService" src="www/zkcservice.js">
-    <clobbers target="ZKCService" />
+    <clobbers target="cordova.plugins.ZKCService" />
   </js-module>
 
   <platform name="android">
