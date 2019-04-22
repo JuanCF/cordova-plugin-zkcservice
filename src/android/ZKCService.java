@@ -32,11 +32,7 @@ import com.smartdevice.aidl.IZKCService;
 
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
-	
-	//getBond bond  = new getBond();
-	
-	//Loginfo("Declaring static attributes...");
-	
+
 	public static String MODULE_FLAG = "module_flag";
 	public static int module_flag = 0;
 	public static int DEVICE_MODEL = 0;
@@ -45,6 +41,7 @@ public class ZKCService extends CordovaPlugin {
 	public static String printer_available;
 	public static String SERVICE_VERSION = "version unknown";
 	public static IZKCService mIzkcService;
+    public static running_flag = true;
 	
 	public static String JSON_DATA;
 	
@@ -63,7 +60,16 @@ public class ZKCService extends CordovaPlugin {
 		else if("printAirtime".equals(action)) {
 			printAirtime(args.getString(0), callbackContext);
 			return true;
-		}
+		}else if("turnOnPrinter".equals(action)){
+            turnOnPrinter(callbackContext)
+            return true;
+        }else if("turnOffPrinter".equals(action)){
+            turnOffPrinter(callbackContext)
+            return true;
+        }else if("getPrinterStatus".equals(action)){
+            getPrinterStatus(callbackContext)
+            return true;
+        }
 		return false;
 	}
 	
@@ -74,6 +80,46 @@ public class ZKCService extends CordovaPlugin {
 			Toast.makeText(webView.getContext(), msg, Toast.LENGTH_LONG).show();
 			callbackContext.success(msg);
 		}
+	}
+
+    private void turnOnPrinter(CallbackContext callbackContext) {
+      int last_module_flag = module_flag;
+      module_flag = 8;
+      if(mIzkcService != null){
+        mIzkcService.setModuleFlag(module_flag);
+        callbackContext.success("Printer Turned On");
+      }else{
+        callbackContext.error("AIDL Service not connected");
+      }
+      module_flag = last_module_flag;
+	}
+
+    private void turnOffPrinter(CallbackContext callbackContext) {
+      int last_module_flag = module_flag;
+      module_flag = 9;
+      if(mIzkcService != null){
+        mIzkcService.setModuleFlag(module_flag);
+        callbackContext.success("Printer Turned Off");
+      }else{
+        callbackContext.error("AIDL Service not connected");
+      }
+      module_flag = last_module_flag;
+	}
+
+    private void getPrinterStatus(CallbackContext callbackContext) {
+      if(mIzkcService != null){
+        try{
+          printer_status = mIzkcService.getPrinterStatus();
+          callbackContext.success(printer_status);
+        }catch(Exception  e){
+          StringWriter sw = new StringWriter();
+          PrintWriter pw = new PrintWriter(sw);
+          e.printStackTrace(pw);
+          callbackContext.success(sw.toString());
+        }
+      }else{
+        callbackContext.error("AIDL Service not connected");
+      }
 	}
 
 	public void printAirtime(String strData, CallbackContext callbackContext){
@@ -203,14 +249,14 @@ public class ZKCService extends CordovaPlugin {
 				if(mIzkcService!=null){
 					try {
 						
-						//获取产品型号 get product model
+						//Get product model
 						DEVICE_MODEL = mIzkcService.getDeviceModel();
-						//设置当前模块 set current function module
+						//Set current function module
 						mIzkcService.setModuleFlag(module_flag);
 						
 						SERVICE_VERSION = mIzkcService.getServiceVersion();
 						
-						//Log.i(TAG,"DEVICE MODEL "+DEVICE_MODEL+" SERVICE VER. "+SERVICE_VERSION);
+
 						
 						JSONObject responseJson = new JSONObject();
                         responseJson.put("DEVICE_MODEL", DEVICE_MODEL);
@@ -224,7 +270,6 @@ public class ZKCService extends CordovaPlugin {
 						e.printStackTrace(pw);
 						callbackContext.success(sw.toString());
 					}
-					//发送消息绑定成功 send message to notify bind success
 				}
 			}
 		};
