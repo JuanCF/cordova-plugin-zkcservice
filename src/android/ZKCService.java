@@ -52,7 +52,6 @@ public class ZKCService extends CordovaPlugin {
 	
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
-      Log.i(TAG,"CALLING BIND SERVICE");
 		if ("ToastIt".equals(action)) {
 			ToastIt(args.getString(0), callbackContext);
 			return true;
@@ -189,19 +188,18 @@ public class ZKCService extends CordovaPlugin {
 		ServiceConnection mServiceConn = new ServiceConnection() {
 			@Override
 			public void onServiceDisconnected(ComponentName name) {
-				Log.e("client", "onServiceDisconnected");
+				//Log.e("client", "onServiceDisconnected");
 				mIzkcService = null;
-				Toast.makeText(webView.getContext(), "Failed to connect to service.", Toast.LENGTH_LONG).show();
+				//Toast.makeText(webView.getContext(), "Failed to connect to service.", Toast.LENGTH_LONG).show();
 				callbackContext.error("Failed to connect to service.");
 				//发送消息绑定失败 send message to notify bind fail
-				//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_FAIL);
 			}
 			
 			
 			@Override
 			public void onServiceConnected(ComponentName name, IBinder service) {
-				Log.e("client", "onServiceConnected");
 				mIzkcService = IZKCService.Stub.asInterface(service);
+                Log.i("client", "onServiceConnected");
 				if(mIzkcService!=null){
 					try {
 						
@@ -212,34 +210,21 @@ public class ZKCService extends CordovaPlugin {
 						
 						SERVICE_VERSION = mIzkcService.getServiceVersion();
 						
+						//Log.i(TAG,"DEVICE MODEL "+DEVICE_MODEL+" SERVICE VER. "+SERVICE_VERSION);
 						
-						printer_status = mIzkcService.getPrinterStatus();						
-						if(mIzkcService.checkPrinterAvailable() == true){
-							printer_available = "Available";
-							mIzkcService.printGBKText("I have been through the fire, I ran the race and I won.");
-							mIzkcService.generateSpace();
-							mIzkcService.generateSpace();
-							mIzkcService.generateSpace();
-							mIzkcService.generateSpace();
-						}else{
-							printer_available = "Unavailable";
-						}
-						
-						
-					
-						//result.put("devicemodel",DEVICE_MODEL);
-						/* result.put("service_v", SERVICE_VERSION); */
-						
-						//Toast.makeText(webView.getContext(), "Service version: "+SERVICE_VERSION, Toast.LENGTH_LONG).show();
-						callbackContext.success(printer_available);
-					} catch (RemoteException e) {
+						JSONObject responseJson = new JSONObject();
+                        responseJson.put("DEVICE_MODEL", DEVICE_MODEL);
+                        responseJson.put("SERVICE_VERSION", SERVICE_VERSION);
+                        responseJson.put("STATUS", "CONNECTED");
+
+						callbackContext.success(responseJson);
+					} catch (Exception  e) {
 						StringWriter sw = new StringWriter();
 						PrintWriter pw = new PrintWriter(sw);
 						e.printStackTrace(pw);
 						callbackContext.success(sw.toString());
 					}
 					//发送消息绑定成功 send message to notify bind success
-					//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
 				}
 			}
 		};
@@ -247,36 +232,11 @@ public class ZKCService extends CordovaPlugin {
 		//com.zkc.aidl.all为远程服务的名称，不可更改
 		//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
 		// 对应的项目所导入的AIDL文件也应该在该包名下
-        Log.i(TAG,"GETTING CONTEXT");
 		Intent intent = new Intent("com.zkc.aidl.all");
 		intent.setPackage("com.smartdevice.aidl");
         Context context = cordova.getActivity().getApplicationContext();
 		context.bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
 	}
-	
-	//Loginfo("Trying to create the connection and bind to the ZKC service.");
-	
-    /* bond.createBond();
-	
-	public class getBond{
-		public getBond() {}
-        
-		public void Loginfo(String message) {
-			Log.i(TAG, message);
-		}
-		
-		public void createBond() {
-			try {
-				
-			
-			} catch (RuntimeException e)‏ {
-				//error handling code 
-				Log.e(TAG, System.out.println(e));
-			}
-		}
-	
-	}
-	 */
-	
+
 }
 
