@@ -52,6 +52,7 @@ public class ZKCService extends CordovaPlugin {
 	
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
+      Log.i(TAG,"CALLING BIND SERVICE");
 		if ("ToastIt".equals(action)) {
 			ToastIt(args.getString(0), callbackContext);
 			return true;
@@ -176,7 +177,8 @@ public class ZKCService extends CordovaPlugin {
 			// 对应的项目所导入的AIDL文件也应该在该包名下
 			Intent intent = new Intent("com.zkc.aidl.all");
 			intent.setPackage("com.smartdevice.aidl");
-			webView.getContext().bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
+            Context context = cordova.getActivity().getApplicationContext();
+			context.bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
 		}catch (JSONException e){
 			e.printStackTrace();
 		}
@@ -245,6 +247,7 @@ public class ZKCService extends CordovaPlugin {
 		//com.zkc.aidl.all为远程服务的名称，不可更改
 		//com.smartdevice.aidl为远程服务声明所在的包名，不可更改，
 		// 对应的项目所导入的AIDL文件也应该在该包名下
+        Log.i(TAG,"GETTING CONTEXT");
 		Intent intent = new Intent("com.zkc.aidl.all");
 		intent.setPackage("com.smartdevice.aidl");
         Context context = cordova.getActivity().getApplicationContext();
