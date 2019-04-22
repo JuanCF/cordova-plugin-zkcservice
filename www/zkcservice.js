@@ -22,6 +22,10 @@ exports.getPrinterStatus = function(args, success, error) {
 	exec(success, error, service, "getPrinterStatus", [args]);
 };
 
+exports.testPrinter = function(args, success, error) {
+	exec(success, error, service, "testPrinter", [args]);
+};
+
 exports.bindZKCService = function(args, success, error) {
 	exec(success, error, service, "bindZKCService", [args]);
 };

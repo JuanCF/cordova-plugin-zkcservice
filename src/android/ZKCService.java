@@ -41,7 +41,7 @@ public class ZKCService extends CordovaPlugin {
 	public static String printer_available;
 	public static String SERVICE_VERSION = "version unknown";
 	public static IZKCService mIzkcService;
-    public static running_flag = true;
+    public static Boolean running_flag = true;
 	
 	public static String JSON_DATA;
 	
@@ -61,13 +61,16 @@ public class ZKCService extends CordovaPlugin {
 			printAirtime(args.getString(0), callbackContext);
 			return true;
 		}else if("turnOnPrinter".equals(action)){
-            turnOnPrinter(callbackContext)
+            turnOnPrinter(callbackContext);
             return true;
         }else if("turnOffPrinter".equals(action)){
-            turnOffPrinter(callbackContext)
+            turnOffPrinter(callbackContext);
             return true;
         }else if("getPrinterStatus".equals(action)){
-            getPrinterStatus(callbackContext)
+            getPrinterStatus(callbackContext);
+            return true;
+        }else if("testPrinter".equals(action)){
+            testPrinter(callbackContext);
             return true;
         }
 		return false;
@@ -86,8 +89,15 @@ public class ZKCService extends CordovaPlugin {
       int last_module_flag = module_flag;
       module_flag = 8;
       if(mIzkcService != null){
-        mIzkcService.setModuleFlag(module_flag);
-        callbackContext.success("Printer Turned On");
+        try{
+            mIzkcService.setModuleFlag(module_flag);
+            callbackContext.success("Printer Turned On");
+        }catch (RemoteException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
       }else{
         callbackContext.error("AIDL Service not connected");
       }
@@ -98,8 +108,15 @@ public class ZKCService extends CordovaPlugin {
       int last_module_flag = module_flag;
       module_flag = 9;
       if(mIzkcService != null){
-        mIzkcService.setModuleFlag(module_flag);
-        callbackContext.success("Printer Turned Off");
+         try{
+            mIzkcService.setModuleFlag(module_flag);
+            callbackContext.success("Printer Turned Off");
+        }catch (RemoteException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
       }else{
         callbackContext.error("AIDL Service not connected");
       }
@@ -121,6 +138,44 @@ public class ZKCService extends CordovaPlugin {
         callbackContext.error("AIDL Service not connected");
       }
 	}
+
+    private void testPrinter(CallbackContext callbackContext) {
+      if(mIzkcService!=null){
+          try {
+              if(mIzkcService.checkPrinterAvailable() == true){
+                  printer_available = "Airtime data sent to printer.";
+
+                  //Begin print airtime voucher.
+                  mIzkcService.printTextAlgin("***** Receipt *****",0,2,1);
+                  mIzkcService.generateSpace();
+                  mIzkcService.setAlignment(0);
+                  mIzkcService.printTextAlgin("Smartbill Platform",0,2,1);
+                  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                  LocalDateTime now = LocalDateTime.now();
+                  mIzkcService.printTextAlgin("Time: "+dtf.format(now),0,2,1);
+                  mIzkcService.generateSpace();
+                  mIzkcService.generateSpace();
+
+                  mIzkcService.generateSpace();
+                  mIzkcService.generateSpace();
+                  mIzkcService.generateSpace();
+                  mIzkcService.printTextAlgin("Proudly by:",0,2,0);
+                  mIzkcService.printTextAlgin("Venus Dawn Technologies",0,2,1);
+                  mIzkcService.printTextAlgin("www.venusdawn.co.ls",0,2,1);
+
+                  //End of airtime voucher.
+              }else{
+                  printer_available = "Printer not initialized or unavailable.";
+              }
+              callbackContext.success(printer_available);
+          } catch (RemoteException e) {
+              StringWriter sw = new StringWriter();
+              PrintWriter pw = new PrintWriter(sw);
+              e.printStackTrace(pw);
+              callbackContext.success(sw.toString());
+          }
+        }
+    }
 
 	public void printAirtime(String strData, CallbackContext callbackContext){
 		//Retrieve Airtime receipt data.
