@@ -138,35 +138,23 @@ public class ZKCService extends CordovaPlugin {
     //Scanner Methods
 
     private void turnOnScanner(CallbackContext callbackContext) {
-      if(mIzkcService != null){
-        try{
-            mIzkcService.turnOn();
-            callbackContext.success("Scanner Turned On");
-        }catch (RemoteException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
-        }
-      }else{
-        callbackContext.error("AIDL Service not connected");
-      }
+        boolean flg = true;
+        Intent intentBroadcast = new Intent();
+        intentBroadcast.setAction("com.zkc.scan");
+        intentBroadcast.putExtra("scan_power", flg);
+        Context context = cordova.getActivity().getApplicationContext();
+        context.sendBroadcast(intentBroadcast);
+        callbackContext.success("Scanner Turned On");
 	}
 
     private void turnOffScanner(CallbackContext callbackContext) {
-      if(mIzkcService != null){
-        try{
-            mIzkcService.turnOff();
-            callbackContext.success("Scanner Turned Off");
-        }catch (RemoteException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
-        }
-      }else{
-        callbackContext.error("AIDL Service not connected");
-      }
+        boolean flg = false;
+        Intent intentBroadcast = new Intent();
+        intentBroadcast.setAction("com.zkc.scan");
+        intentBroadcast.putExtra("scan_power", flg);
+        Context context = cordova.getActivity().getApplicationContext();
+        context.sendBroadcast(intentBroadcast);
+        callbackContext.success("Scanner Turned Off");
 	}
 
     private void getPrinterStatus(CallbackContext callbackContext) {
