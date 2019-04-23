@@ -70,6 +70,12 @@ public class ZKCService extends CordovaPlugin {
         }else if("turnOffPrinter".equals(action)){
             turnOffPrinter(callbackContext);
             return true;
+        }else if("turnOnScanner".equals(action)){
+            turnOnScanner(callbackContext);
+            return true;
+        }else if("turnOffScanner".equals(action)){
+            turnOffScanner(callbackContext);
+            return true;
         }else if("getPrinterStatus".equals(action)){
             getPrinterStatus(callbackContext);
             return true;
@@ -88,6 +94,8 @@ public class ZKCService extends CordovaPlugin {
 			callbackContext.success(msg);
 		}
 	}
+
+    //Printer Methods
 
     private void turnOnPrinter(CallbackContext callbackContext) {
       int last_module_flag = module_flag;
@@ -125,6 +133,40 @@ public class ZKCService extends CordovaPlugin {
         callbackContext.error("AIDL Service not connected");
       }
       module_flag = last_module_flag;
+	}
+
+    //Scanner Methods
+
+    private void turnOnScanner(CallbackContext callbackContext) {
+      if(mIzkcService != null){
+        try{
+            mIzkcService.turnOn();
+            callbackContext.success("Scanner Turned On");
+        }catch (RemoteException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+      }else{
+        callbackContext.error("AIDL Service not connected");
+      }
+	}
+
+    private void turnOffScanner(CallbackContext callbackContext) {
+      if(mIzkcService != null){
+        try{
+            mIzkcService.turnOff();
+            callbackContext.success("Scanner Turned Off");
+        }catch (RemoteException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+      }else{
+        callbackContext.error("AIDL Service not connected");
+      }
 	}
 
     private void getPrinterStatus(CallbackContext callbackContext) {
