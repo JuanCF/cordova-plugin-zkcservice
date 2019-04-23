@@ -156,7 +156,7 @@ public class ZKCService extends CordovaPlugin {
                       mIzkcService.printGBKText("SECRETARIA DE SEGURIDAD"+ "\n");
                       mIzkcService.printGBKText("DIRECCIÓN NACIONAL DE VIALIDAD Y"+ "\n");
                       mIzkcService.printGBKText("TRANSPORTE"+ "\n\n\n\n");
-                      mIzkcService.printGBKText("Codigo de Infraccion: XXXXXXX"+ "\n\n\n\n");
+                      mIzkcService.printGBKText("Codigo de Infraccion: "+ msg+"\n\n\n\n");
                       mIzkcService.printGBKText("INFRACTOR"+ "\n\n");
                       mIzkcService.setAlignment(0);
                       mIzkcService.printGBKText("Nombre: Juan Carlos Flores Martínez"+ "\n");
