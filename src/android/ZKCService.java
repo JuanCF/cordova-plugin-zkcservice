@@ -145,8 +145,7 @@ public class ZKCService extends CordovaPlugin {
               if(mIzkcService.checkPrinterAvailable() == true){
                   printer_available = "Airtime data sent to printer.";
 
-                  //Begin print airtime voucher.
-                  mIzkcService.printTextAlgin("***** Receipt *****",0,2,1);
+                  /*mIzkcService.printTextAlgin("***** Receipt *****",0,2,1);
                   mIzkcService.generateSpace();
                   mIzkcService.setAlignment(0);
                   mIzkcService.printTextAlgin("Smartbill Platform",0,2,1);
@@ -161,9 +160,53 @@ public class ZKCService extends CordovaPlugin {
                   mIzkcService.generateSpace();
                   mIzkcService.printTextAlgin("Proudly by:",0,2,0);
                   mIzkcService.printTextAlgin("Venus Dawn Technologies",0,2,1);
-                  mIzkcService.printTextAlgin("www.venusdawn.co.ls",0,2,1);
+                  mIzkcService.printTextAlgin("www.venusdawn.co.ls",0,2,1);*/
 
-                  //End of airtime voucher.
+                  mIzkcService.setAlignment(1);
+                  mIzkcService.printGBKText("REPÚBLICA DE HONDURAS"+ "\n");
+                  mIzkcService.printGBKText("SECRETARIA DE SEGURIDAD"+ "\n");
+                  mIzkcService.printGBKText("DIRECCIÓN NACIONAL DE VIALIDAD Y"+ "\n");
+                  mIzkcService.printGBKText("TRANSPORTE"+ "\n\n\n\n");
+                  mIzkcService.printGBKText("Código de Infracción: XXXXXXX"+ "\n\n\n\n");
+                  mIzkcService.printGBKText("INFRACTOR"+ "\n\n");
+                  mIzkcService.setAlignment(0);
+                  mIzkcService.printGBKText("Nombre: Juan Carlos Flores Martínez"+ "\n");
+                  mIzkcService.printGBKText("Licencia No.: XXXXX"+ "\n");
+                  mIzkcService.printGBKText("Licencia Válida Hasta: 17-10-2022 (vigente)"+ "\n\n\n\n");
+                  mIzkcService.setAlignment(1);
+                  mIzkcService.printGBKText("VEHÍCULO"+ "\n\n");
+                  mIzkcService.setAlignment(0);
+                  mIzkcService.printGBKText("Marca: Toyota     Color: Negro"+ "\n");
+                  mIzkcService.printGBKText("Tipo: Turismo     Año: 1998   "+ "\n");
+                  mIzkcService.printGBKText("Placa: XXXXXXX"+ "\n");
+                  mIzkcService.setAlignment(1);
+                  mIzkcService.printGBKText("INFRACCIÓN"+ "\n\n");
+                  mIzkcService.setAlignment(0);
+                  mIzkcService.printGBKText("Infracción Cometida: Artículo XX#XX"+ "\n");
+                  mIzkcService.printGBKText("Tipo de Infracción: XXXX"+ "\n");
+                  mIzkcService.printGBKText("Descripción: XXXXXXX XXXXXXX XXX XXXXXXXX"+ "\n");
+                  mIzkcService.printGBKText("Lugar de Infraccion: Tegucigalpa, F.M."+ "\n");
+                  mIzkcService.printGBKText("Fecha y Hora Infracción: XX/XX/XXXX - XX:XX"+ "\n");
+                  mIzkcService.setAlignment(1);
+                  mIzkcService.printGBKText("CARGOS"+ "\n\n");
+                  mIzkcService.setAlignment(0);
+                  mIzkcService.printGBKText("Cargo por Infraccion Actual:     L XXX.00"+ "\n");
+                  mIzkcService.printGBKText("Cargo por Infracciones Anteriores: L 0.00"+ "\n");
+                  mIzkcService.printGBKText("                                 --------"+ "\n");
+                  mIzkcService.printGBKText("                                 L XXX.00"+ "\n\n\n\n\n");
+                  mIzkcService.setAlignment(1);
+                  mIzkcService.printGBKText("El infractor deberá efectuar el pago de"+ "\n");
+                  mIzkcService.printGBKText("infracciones utilizando el app InfraccionesHN"+ "\n");
+                  mIzkcService.printGBKText("o desde el sitio web infraccioneshn.com o"+ "\n");
+                  mIzkcService.printGBKText("El infractor deberá efectuar el pago de"+ "\n");
+                  mIzkcService.printGBKText("en las ventanillas de Banco Atlántida en un"+ "\n");
+                  mIzkcService.printGBKText("plazo no mayor a un mes después de emitido"+ "\n");
+                  mIzkcService.printGBKText("este documento."+ "\n");
+                  mIzkcService.setAlignment(1);
+                  mIzkcService.printGBKText("Nombre1 nombre2 apellido1 apellido2"+ "\n");
+                  mIzkcService.printGBKText("Policía de Viabilidad y Transporte"+ "\n");
+                  mIzkcService.printGBKText("DNVT - 09624"+ "\n");
+                  mIzkcService.printGBKText("Tegucigalpa, Franciso Morazán"+ "\n\n\n\n");
               }else{
                   printer_available = "Printer not initialized or unavailable.";
               }
