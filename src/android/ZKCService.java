@@ -29,6 +29,9 @@ import android.widget.Toast;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.smartdevice.aidl.IZKCService;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 
 public class ZKCService extends CordovaPlugin {
 	public static final String TAG = "ZKCService";
@@ -45,7 +48,8 @@ public class ZKCService extends CordovaPlugin {
 	
 	public static String JSON_DATA;
 	
-	private Handler mhanlder; 
+	private Handler mhanlder;
+    private Bitmap mBitmap = null;
 	
 	@Override
 	public boolean execute(String action,JSONArray args,CallbackContext callbackContext) throws JSONException {
@@ -70,7 +74,7 @@ public class ZKCService extends CordovaPlugin {
             getPrinterStatus(callbackContext);
             return true;
         }else if("testPrinter".equals(action)){
-            testPrinter(callbackContext);
+            testPrinter(args.getString(0),callbackContext);
             return true;
         }
 		return false;
@@ -139,84 +143,74 @@ public class ZKCService extends CordovaPlugin {
       }
 	}
 
-    private void testPrinter(CallbackContext callbackContext) {
+    private void testPrinter(String msg,CallbackContext callbackContext) {
       if(mIzkcService!=null){
-          try {
-              if(mIzkcService.checkPrinterAvailable() == true){
-                  printer_available = "Airtime data sent to printer.";
+          cordova.getThreadPool().execute(new Runnable() {
+              public void run() {
+                try {
+                  if(mIzkcService.checkPrinterAvailable() == true){
+                      printer_available = "Voucher sent to printer.";
 
-                  /*mIzkcService.printTextAlgin("***** Receipt *****",0,2,1);
-                  mIzkcService.generateSpace();
-                  mIzkcService.setAlignment(0);
-                  mIzkcService.printTextAlgin("Smartbill Platform",0,2,1);
-                  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                  LocalDateTime now = LocalDateTime.now();
-                  mIzkcService.printTextAlgin("Time: "+dtf.format(now),0,2,1);
-                  mIzkcService.generateSpace();
-                  mIzkcService.generateSpace();
-
-                  mIzkcService.generateSpace();
-                  mIzkcService.generateSpace();
-                  mIzkcService.generateSpace();
-                  mIzkcService.printTextAlgin("Proudly by:",0,2,0);
-                  mIzkcService.printTextAlgin("Venus Dawn Technologies",0,2,1);
-                  mIzkcService.printTextAlgin("www.venusdawn.co.ls",0,2,1);*/
-
-                  mIzkcService.setAlignment(1);
-                  mIzkcService.printGBKText("REPÚBLICA DE HONDURAS"+ "\n");
-                  mIzkcService.printGBKText("SECRETARIA DE SEGURIDAD"+ "\n");
-                  mIzkcService.printGBKText("DIRECCIÓN NACIONAL DE VIALIDAD Y"+ "\n");
-                  mIzkcService.printGBKText("TRANSPORTE"+ "\n\n\n\n");
-                  mIzkcService.printGBKText("Código de Infracción: XXXXXXX"+ "\n\n\n\n");
-                  mIzkcService.printGBKText("INFRACTOR"+ "\n\n");
-                  mIzkcService.setAlignment(0);
-                  mIzkcService.printGBKText("Nombre: Juan Carlos Flores Martínez"+ "\n");
-                  mIzkcService.printGBKText("Licencia No.: XXXXX"+ "\n");
-                  mIzkcService.printGBKText("Licencia Válida Hasta: 17-10-2022 (vigente)"+ "\n\n\n\n");
-                  mIzkcService.setAlignment(1);
-                  mIzkcService.printGBKText("VEHÍCULO"+ "\n\n");
-                  mIzkcService.setAlignment(0);
-                  mIzkcService.printGBKText("Marca: Toyota     Color: Negro"+ "\n");
-                  mIzkcService.printGBKText("Tipo: Turismo     Año: 1998   "+ "\n");
-                  mIzkcService.printGBKText("Placa: XXXXXXX"+ "\n");
-                  mIzkcService.setAlignment(1);
-                  mIzkcService.printGBKText("INFRACCIÓN"+ "\n\n");
-                  mIzkcService.setAlignment(0);
-                  mIzkcService.printGBKText("Infracción Cometida: Artículo XX#XX"+ "\n");
-                  mIzkcService.printGBKText("Tipo de Infracción: XXXX"+ "\n");
-                  mIzkcService.printGBKText("Descripción: XXXXXXX XXXXXXX XXX XXXXXXXX"+ "\n");
-                  mIzkcService.printGBKText("Lugar de Infraccion: Tegucigalpa, F.M."+ "\n");
-                  mIzkcService.printGBKText("Fecha y Hora Infracción: XX/XX/XXXX - XX:XX"+ "\n");
-                  mIzkcService.setAlignment(1);
-                  mIzkcService.printGBKText("CARGOS"+ "\n\n");
-                  mIzkcService.setAlignment(0);
-                  mIzkcService.printGBKText("Cargo por Infraccion Actual:     L XXX.00"+ "\n");
-                  mIzkcService.printGBKText("Cargo por Infracciones Anteriores: L 0.00"+ "\n");
-                  mIzkcService.printGBKText("                                 --------"+ "\n");
-                  mIzkcService.printGBKText("                                 L XXX.00"+ "\n\n\n\n\n");
-                  mIzkcService.setAlignment(1);
-                  mIzkcService.printGBKText("El infractor deberá efectuar el pago de"+ "\n");
-                  mIzkcService.printGBKText("infracciones utilizando el app InfraccionesHN"+ "\n");
-                  mIzkcService.printGBKText("o desde el sitio web infraccioneshn.com o"+ "\n");
-                  mIzkcService.printGBKText("El infractor deberá efectuar el pago de"+ "\n");
-                  mIzkcService.printGBKText("en las ventanillas de Banco Atlántida en un"+ "\n");
-                  mIzkcService.printGBKText("plazo no mayor a un mes después de emitido"+ "\n");
-                  mIzkcService.printGBKText("este documento."+ "\n");
-                  mIzkcService.setAlignment(1);
-                  mIzkcService.printGBKText("Nombre1 nombre2 apellido1 apellido2"+ "\n");
-                  mIzkcService.printGBKText("Policía de Viabilidad y Transporte"+ "\n");
-                  mIzkcService.printGBKText("DNVT - 09624"+ "\n");
-                  mIzkcService.printGBKText("Tegucigalpa, Franciso Morazán"+ "\n\n\n\n");
-              }else{
-                  printer_available = "Printer not initialized or unavailable.";
+                      mIzkcService.setAlignment(1);
+                      mIzkcService.printGBKText("REPUBLICA DE HONDURAS"+ "\n");
+                      mIzkcService.printGBKText("SECRETARIA DE SEGURIDAD"+ "\n");
+                      mIzkcService.printGBKText("DIRECCIÓN NACIONAL DE VIALIDAD Y"+ "\n");
+                      mIzkcService.printGBKText("TRANSPORTE"+ "\n\n\n\n");
+                      mIzkcService.printGBKText("Codigo de Infraccion: XXXXXXX"+ "\n\n\n\n");
+                      mIzkcService.printGBKText("INFRACTOR"+ "\n\n");
+                      mIzkcService.setAlignment(0);
+                      mIzkcService.printGBKText("Nombre: Juan Carlos Flores Martínez"+ "\n");
+                      mIzkcService.printGBKText("Licencia No.: XXXXX"+ "\n");
+                      mIzkcService.printGBKText("Licencia Válida Hasta: 17-10-2022 (vigente)"+ "\n\n\n\n");
+                      mIzkcService.setAlignment(1);
+                      mIzkcService.printGBKText("VEHICULO"+ "\n\n");
+                      mIzkcService.setAlignment(0);
+                      mIzkcService.printGBKText("Marca: Toyota     Color: Negro"+ "\n");
+                      mIzkcService.printGBKText("Tipo: Turismo     Año: 1998   "+ "\n");
+                      mIzkcService.printGBKText("Placa: XXXXXXX"+ "\n");
+                      mIzkcService.setAlignment(1);
+                      mIzkcService.printGBKText("INFRACCION"+ "\n\n");
+                      mIzkcService.setAlignment(0);
+                      mIzkcService.printGBKText("Infracción Cometida: Artículo XX#XX"+ "\n");
+                      mIzkcService.printGBKText("Tipo de Infracción: XXXX"+ "\n");
+                      mIzkcService.printGBKText("Descripción: XXXXXXX XXXXXXX XXX XXXXXXXX"+ "\n");
+                      mIzkcService.printGBKText("Lugar de Infraccion: Tegucigalpa, F.M."+ "\n");
+                      mIzkcService.printGBKText("Fecha y Hora Infracción: XX/XX/XXXX - XX:XX"+ "\n");
+                      mIzkcService.setAlignment(1);
+                      mIzkcService.printGBKText("CARGOS"+ "\n\n");
+                      mIzkcService.setAlignment(0);
+                      mIzkcService.printGBKText("Infraccion Actual:     L XXX.00"+ "\n");
+                      mIzkcService.printGBKText("Infracciones Anteriores: L 0.00"+ "\n");
+                      mIzkcService.printGBKText("                        --------"+ "\n");
+                      mIzkcService.printGBKText("                       L XXX.00"+ "\n\n\n\n\n");
+                      mIzkcService.setAlignment(1);
+                      mIzkcService.printGBKText("El infractor debera efectuar el pago de ");
+                      mIzkcService.printGBKText("infracciones utilizando el app InfraccionesHN " );
+                      mIzkcService.printGBKText("o desde el sitio web infraccioneshn.com o ");
+                      mIzkcService.printGBKText("en las ventanillas de Banco Atlantida en un ");
+                      mIzkcService.printGBKText("plazo no mayor a un mes despues de emitido ");
+                      mIzkcService.printGBKText("este documento."+ "\n\n\n");
+                      mIzkcService.printGBKText("Carlos Alejandro Oseguera Barrientos"+ "\n");
+                      mIzkcService.printGBKText("Policia de Viabilidad y Transporte"+ "\n");
+                      mIzkcService.printGBKText("DNVT - 09624"+ "\n");
+                      mIzkcService.printGBKText("Tegucigalpa, Franciso Morazan"+ "\n\n\n\n");
+                      Thread.sleep(100);
+                      mBitmap = mIzkcService.createQRCode(msg, 384, 384);
+                      mIzkcService.printBitmap(mBitmap);
+                      mIzkcService.printGBKText("\n\n\n\n");
+                  }else{
+                      printer_available = "Printer not initialized or unavailable.";
+                  }
+                  callbackContext.success(printer_available);
+              } catch (Exception e) {
+                  StringWriter sw = new StringWriter();
+                  PrintWriter pw = new PrintWriter(sw);
+                  e.printStackTrace(pw);
+                  callbackContext.success(sw.toString());
               }
-              callbackContext.success(printer_available);
-          } catch (RemoteException e) {
-              StringWriter sw = new StringWriter();
-              PrintWriter pw = new PrintWriter(sw);
-              e.printStackTrace(pw);
-              callbackContext.success(sw.toString());
-          }
+              }
+          });
+
         }
     }
 
