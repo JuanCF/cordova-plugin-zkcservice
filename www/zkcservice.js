@@ -6,9 +6,13 @@ exports.ToastIt = function(args, success, error) {
 	exec(success, error, service, "ToastIt", [args]);
 };
 
-exports.printAirtime = function(args, success, error) {
-	exec(success, error, service, "printAirtime", [args]);
+//ZKC AIDL Service
+
+exports.bindZKCService = function(args, success, error) {
+	exec(success, error, service, "bindZKCService", [args]);
 };
+
+//Printer Methods
 
 exports.turnOnPrinter = function(args, success, error) {
 	exec(success, error, service, "turnOnPrinter", [args]);
@@ -26,9 +30,21 @@ exports.testPrinter = function(args, success, error) {
 	exec(success, error, service, "testPrinter", [args]);
 };
 
-exports.bindZKCService = function(args, success, error) {
-	exec(success, error, service, "bindZKCService", [args]);
+exports.printAirtime = function(args, success, error) {
+	exec(success, error, service, "printAirtime", [args]);
 };
+
+//Scanner Methods
+
+exports.turnOffScanner = function(args, success, error) {
+	exec(success, error, service, "turnOffScanner", [args]);
+};
+
+exports.turnOnScanner = function(args, success, error) {
+	exec(success, error, service, "turnOnScanner", [args]);
+};
+
+//PSAM Methods
 
 exports.onDataReceived = function(handle, success, error) {
 	exec(success, error, service, "onDataReceived", [handle]);
