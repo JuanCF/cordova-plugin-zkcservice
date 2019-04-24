@@ -26,7 +26,9 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import org.apache.cordova.PluginResult;
 import android.widget.Toast;
+import java.util.Date;
 import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import com.smartdevice.aidl.IZKCService;
 import android.graphics.Bitmap;
@@ -181,9 +183,12 @@ public class ZKCService extends CordovaPlugin {
                   if(mIzkcService.checkPrinterAvailable() == true){
                       printer_available = "Voucher sent to printer.";
 
-                      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a");
-				      LocalDateTime now = LocalDateTime.now();
+                      SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                      Date myDate = new Date();
+                      //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a");
+				      //LocalDateTime now = LocalDateTime.now();
 
+                      //mIzkcService.setTypeface(1);//0 Big/ 1 Little
                       mIzkcService.setAlignment(1);
                       mIzkcService.printGBKText("REPUBLICA DE HONDURAS"+ "\n");
                       mIzkcService.printGBKText("SECRETARIA DE SEGURIDAD"+ "\n");
@@ -208,7 +213,7 @@ public class ZKCService extends CordovaPlugin {
                       mIzkcService.printGBKText("Tipo de Infraccion: Grave"+ "\n");
                       mIzkcService.printGBKText("Descripcion: Conducir sin haber obtenido la licencia de conductor de aprendizaje"+ "\n");
                       mIzkcService.printGBKText("Lugar: Tegucigalpa, F.M."+ "\n");
-                      mIzkcService.printGBKText("Fecha y Hora: "+ dtf.format(now)+ "\n\n\n");
+                      mIzkcService.printGBKText("Fecha y Hora: "+ dateFormat.format(myDate)+ "\n\n\n");
                       mIzkcService.setAlignment(1);
                       mIzkcService.printGBKText("CARGOS"+ "\n\n");
                       mIzkcService.setAlignment(0);
