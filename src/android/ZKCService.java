@@ -181,6 +181,9 @@ public class ZKCService extends CordovaPlugin {
                   if(mIzkcService.checkPrinterAvailable() == true){
                       printer_available = "Voucher sent to printer.";
 
+                      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a");
+				      LocalDateTime now = LocalDateTime.now();
+
                       mIzkcService.setAlignment(1);
                       mIzkcService.printGBKText("REPUBLICA DE HONDURAS"+ "\n");
                       mIzkcService.printGBKText("SECRETARIA DE SEGURIDAD"+ "\n");
@@ -205,14 +208,14 @@ public class ZKCService extends CordovaPlugin {
                       mIzkcService.printGBKText("Tipo de Infraccion: Grave"+ "\n");
                       mIzkcService.printGBKText("Descripcion: Conducir sin haber obtenido la licencia de conductor de aprendizaje"+ "\n");
                       mIzkcService.printGBKText("Lugar: Tegucigalpa, F.M."+ "\n");
-                      mIzkcService.printGBKText("Fecha y Hora: XX/XX/XXXX - XX:XX"+ "\n\n\n");
+                      mIzkcService.printGBKText("Fecha y Hora: "+ dtf.format(now)+ "\n\n\n");
                       mIzkcService.setAlignment(1);
                       mIzkcService.printGBKText("CARGOS"+ "\n\n");
                       mIzkcService.setAlignment(0);
                       mIzkcService.printGBKText("Infraccion Actual:     L 600.00"+ "\n");
                       mIzkcService.printGBKText("Cargos Anteriores:       L 0.00"+ "\n");
-                      mIzkcService.printGBKText("                        --------"+ "\n");
-                      mIzkcService.printGBKText("                       L .600.00"+ "\n\n\n");
+                      mIzkcService.printGBKText("                       --------"+ "\n");
+                      mIzkcService.printGBKText("                       L 600.00"+ "\n\n\n");
                       mIzkcService.setAlignment(1);
                       mIzkcService.printGBKText("Debe efectuar el pago ");
                       mIzkcService.printGBKText("utilizando el app InfraccionesHN " );
@@ -289,7 +292,7 @@ public class ZKCService extends CordovaPlugin {
 								mIzkcService.generateSpace();
 								mIzkcService.setAlignment(0);
 								mIzkcService.printTextAlgin("Smartbill Platform",0,2,1);
-								DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+								DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 								LocalDateTime now = LocalDateTime.now();							
 								mIzkcService.printTextAlgin("Time: "+dtf.format(now),0,2,1);
 								mIzkcService.generateSpace();
