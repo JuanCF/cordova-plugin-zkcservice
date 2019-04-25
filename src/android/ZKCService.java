@@ -183,7 +183,7 @@ public class ZKCService extends CordovaPlugin {
                   if(mIzkcService.checkPrinterAvailable() == true){
                       printer_available = "Voucher sent to printer.";
 
-                      SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                      SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                       Date myDate = new Date();
                       //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a");
 				      //LocalDateTime now = LocalDateTime.now();
