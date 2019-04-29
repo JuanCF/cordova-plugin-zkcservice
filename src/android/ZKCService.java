@@ -93,6 +93,9 @@ public class ZKCService extends CordovaPlugin {
         }else if("printText".equals(action)){
             printText(args.getString(0), true, callbackContext);
             return true;
+        }else if("printBulkData".equals(action)){
+            printBulkData(args.getString(0), callbackContext);
+            return true;
         }
 		return false;
 	}
@@ -209,6 +212,29 @@ public class ZKCService extends CordovaPlugin {
     }
 
 
+    private void printBase64Image(JSONObject obj, Boolean standalone, CallbackContext callbackContext){
+        try{
+          String base64Img = obj.getString("image");
+          if(mIzkcService.checkPrinterAvailable() == true){
+            printer_available = "Image sent to printer.";
+            String cleanImage = base64Img.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+            mBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            mIzkcService.printBitmap(mBitmap);
+          }else{
+              printer_available = "Printer not initialized or unavailable.";
+          }
+          if(standalone){
+            callbackContext.success(printer_available);
+          }
+        }catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+    }
+
     private void printText(String textObj, Boolean standalone, CallbackContext callbackContext){
         try{
           JSONObject obj = new JSONObject(textObj);
@@ -230,6 +256,53 @@ public class ZKCService extends CordovaPlugin {
             e.printStackTrace(pw);
             callbackContext.success(sw.toString());
         }
+    }
+
+    private void printText(JSONObject obj, Boolean standalone, CallbackContext callbackContext){
+        try{
+          String text = obj.getString("text");
+          Integer align = obj.getInt ("align");
+          if(mIzkcService.checkPrinterAvailable() == true){
+            printer_available = "Text sent to printer.";
+            mIzkcService.setAlignment(align);
+            mIzkcService.printGBKText(text);
+          }else{
+              printer_available = "Printer not initialized or unavailable.";
+          }
+          if(standalone){
+            callbackContext.success(printer_available);
+          }
+        }catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+    }
+
+    private void printBulkData(String arg,CallbackContext callbackContext){
+      try{
+        JSONObject obj = new JSONObject(arg);
+        JSONArray printableArray = obj.getJSONArray("printableObjects");
+
+        Integer datalen = printableArray.length();
+
+        for (int i = 0; i < datalen; ++i){
+          JSONObject printable = printableArray.getJSONObject(i);
+          if(printable.has("text")){
+            printText(printable,false,callbackContext);
+          }
+          if(printable.has("image")){
+            printBase64Image(printable,false,callbackContext);
+          }
+        }
+
+      } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+      }
     }
 
     private void testPrinter(String msg,CallbackContext callbackContext) {

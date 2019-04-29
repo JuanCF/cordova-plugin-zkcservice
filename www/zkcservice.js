@@ -42,6 +42,10 @@ exports.printText = function(args, success, error) {
 	exec(success, error, service, "printText", [args]);
 };
 
+exports.printBulkData = function(args, success, error) {
+	exec(success, error, service, "printBulkData", [args]);
+};
+
 //Scanner Methods
 
 exports.turnOffScanner = function(args, success, error) {
