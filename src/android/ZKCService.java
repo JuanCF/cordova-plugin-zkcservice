@@ -122,7 +122,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+            callbackContext.error(sw.toString());
         }
       }else{
         callbackContext.error("AIDL Service not connected");
@@ -207,7 +207,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+            callbackContext.error(sw.toString());
         }
     }
 
@@ -231,7 +231,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+            callbackContext.error(sw.toString());
         }
     }
 
@@ -253,7 +253,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+            callbackContext.error(sw.toString());
         }
     }
 
@@ -276,7 +276,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+            callbackContext.error(sw.toString());
         }
     }
 
@@ -298,7 +298,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+            callbackContext.error(sw.toString());
         }
     }
 
@@ -330,7 +330,7 @@ public class ZKCService extends CordovaPlugin {
                       StringWriter sw = new StringWriter();
                       PrintWriter pw = new PrintWriter(sw);
                       e.printStackTrace(pw);
-                      callbackContext.success(sw.toString());
+                      callbackContext.error(sw.toString());
                 }
             }
         });
@@ -406,7 +406,7 @@ public class ZKCService extends CordovaPlugin {
                   StringWriter sw = new StringWriter();
                   PrintWriter pw = new PrintWriter(sw);
                   e.printStackTrace(pw);
-                  callbackContext.success(sw.toString());
+                  callbackContext.error(sw.toString());
               }
               }
           });
@@ -501,7 +501,7 @@ public class ZKCService extends CordovaPlugin {
 							StringWriter sw = new StringWriter();
 							PrintWriter pw = new PrintWriter(sw);
 							e.printStackTrace(pw);
-							callbackContext.success(sw.toString());
+							callbackContext.error(sw.toString());
 						}
 						//发送消息绑定成功 send message to notify bind success
 						//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
@@ -560,7 +560,7 @@ public class ZKCService extends CordovaPlugin {
 						StringWriter sw = new StringWriter();
 						PrintWriter pw = new PrintWriter(sw);
 						e.printStackTrace(pw);
-						callbackContext.success(sw.toString());
+						callbackContext.error(sw.toString());
 					}
 				}
 			}
