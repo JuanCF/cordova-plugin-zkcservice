@@ -38,6 +38,10 @@ exports.printBase64Image = function(args, success, error) {
 	exec(success, error, service, "printBase64Image", [args]);
 };
 
+exports.printText = function(args, success, error) {
+	exec(success, error, service, "printText", [args]);
+};
+
 //Scanner Methods
 
 exports.turnOffScanner = function(args, success, error) {

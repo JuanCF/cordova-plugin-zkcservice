@@ -90,6 +90,9 @@ public class ZKCService extends CordovaPlugin {
         }else if("printBase64Image".equals(action)){
             printBase64Image(args.getString(0), true, callbackContext);
             return true;
+        }else if("printText".equals(action)){
+            printText(args.getString(0), true, callbackContext);
+            return true;
         }
 		return false;
 	}
@@ -191,6 +194,30 @@ public class ZKCService extends CordovaPlugin {
             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
             mBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             mIzkcService.printBitmap(mBitmap);
+          }else{
+              printer_available = "Printer not initialized or unavailable.";
+          }
+          if(standalone){
+            callbackContext.success(printer_available);
+          }
+        }catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+    }
+
+
+    private void printText(String textObj, Boolean standalone, CallbackContext callbackContext){
+        try{
+          JSONObject obj = new JSONObject(textObj);
+          String text = obj.getString("text");
+          Integer align = obj.getInt ("align");
+          if(mIzkcService.checkPrinterAvailable() == true){
+            printer_available = "Text sent to printer.";
+            mIzkcService.setAlignment(align);
+            mIzkcService.printGBKText(text);
           }else{
               printer_available = "Printer not initialized or unavailable.";
           }
