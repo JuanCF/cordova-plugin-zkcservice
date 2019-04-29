@@ -296,7 +296,7 @@ public class ZKCService extends CordovaPlugin {
             printBase64Image(printable,false,callbackContext);
           }
         }
-
+        callbackContext.success("Printed " + datalen + " objects.");
       } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
