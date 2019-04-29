@@ -235,6 +235,28 @@ public class ZKCService extends CordovaPlugin {
         }
     }
 
+
+    private void printQR(JSONObject obj, Boolean standalone, CallbackContext callbackContext){
+        try{
+          String qr = obj.getString("qrtext");
+          if(mIzkcService.checkPrinterAvailable() == true){
+            printer_available = "QR sent to printer.";
+            mBitmap = mIzkcService.createQRCode(qr, 384, 384);
+            mIzkcService.printBitmap(mBitmap);
+          }else{
+              printer_available = "Printer not initialized or unavailable.";
+          }
+          if(standalone){
+            callbackContext.success(printer_available);
+          }
+        }catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+    }
+
     private void printText(String textObj, Boolean standalone, CallbackContext callbackContext){
         try{
           JSONObject obj = new JSONObject(textObj);
@@ -280,28 +302,38 @@ public class ZKCService extends CordovaPlugin {
         }
     }
 
-    private void printBulkData(String arg,CallbackContext callbackContext){
-      try{
-        JSONObject obj = new JSONObject(arg);
-        JSONArray printableArray = obj.getJSONArray("printableObjects");
+    private void printBulkData(String arg, CallbackContext callbackContext){
+      if(mIzkcService!=null){
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                try{
+                  JSONObject obj = new JSONObject(arg);
+                  JSONArray printableArray = obj.getJSONArray("printableObjects");
 
-        Integer datalen = printableArray.length();
+                  Integer datalen = printableArray.length();
 
-        for (int i = 0; i < datalen; ++i){
-          JSONObject printable = printableArray.getJSONObject(i);
-          if(printable.has("text")){
-            printText(printable,false,callbackContext);
-          }
-          if(printable.has("image")){
-            printBase64Image(printable,false,callbackContext);
-          }
-        }
-        callbackContext.success("Printed " + datalen + " objects.");
-      } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
+                  for (int i = 0; i < datalen; ++i){
+                    JSONObject printable = printableArray.getJSONObject(i);
+                    if(printable.has("text")){
+                      printText(printable,false,callbackContext);
+                    }
+                    if(printable.has("image")){
+                      printBase64Image(printable,false,callbackContext);
+                    }
+                    if(printable.has("qrtext")){
+                      Thread.sleep(100);
+                      printQR(printable,false,callbackContext);
+                    }
+                  }
+                  callbackContext.success("Printed " + datalen + " objects.");
+                } catch (Exception e) {
+                      StringWriter sw = new StringWriter();
+                      PrintWriter pw = new PrintWriter(sw);
+                      e.printStackTrace(pw);
+                      callbackContext.success(sw.toString());
+                }
+            }
+        });
       }
     }
 
