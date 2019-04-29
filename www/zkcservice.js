@@ -34,6 +34,10 @@ exports.printAirtime = function(args, success, error) {
 	exec(success, error, service, "printAirtime", [args]);
 };
 
+exports.printBase64Image = function(args, success, error) {
+	exec(success, error, service, "printBase64Image", [args]);
+};
+
 //Scanner Methods
 
 exports.turnOffScanner = function(args, success, error) {

@@ -23,6 +23,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
+import android.graphics.BitmapFactory;
 import android.view.inputmethod.InputMethodManager;
 import org.apache.cordova.PluginResult;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ import java.util.Date;
 import java.time.LocalDateTime;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import android.util.Base64;
+import java.util.Base64.Decoder;
 import com.smartdevice.aidl.IZKCService;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -83,6 +86,9 @@ public class ZKCService extends CordovaPlugin {
             return true;
         }else if("testPrinter".equals(action)){
             testPrinter(args.getString(0),callbackContext);
+            return true;
+        }else if("printBase64Image".equals(action)){
+            printBase64Image(args.getString(0), true, callbackContext);
             return true;
         }
 		return false;
@@ -174,6 +180,30 @@ public class ZKCService extends CordovaPlugin {
         callbackContext.error("AIDL Service not connected");
       }
 	}
+
+    private void printBase64Image(String imageObj, Boolean standalone, CallbackContext callbackContext){
+        try{
+          JSONObject obj = new JSONObject(imageObj);
+          String base64Img = obj.getString("image");
+          if(mIzkcService.checkPrinterAvailable() == true){
+            printer_available = "Image sent to printer.";
+            String cleanImage = base64Img.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+            mBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            mIzkcService.printBitmap(mBitmap);
+          }else{
+              printer_available = "Printer not initialized or unavailable.";
+          }
+          if(standalone){
+            callbackContext.success(printer_available);
+          }
+        }catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            callbackContext.success(sw.toString());
+        }
+    }
 
     private void testPrinter(String msg,CallbackContext callbackContext) {
       if(mIzkcService!=null){
