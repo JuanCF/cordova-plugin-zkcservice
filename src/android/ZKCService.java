@@ -122,7 +122,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.error(sw.toString());
+            callbackContext.success(sw.toString());
         }
       }else{
         callbackContext.error("AIDL Service not connected");
@@ -207,7 +207,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.error(sw.toString());
+            callbackContext.success(sw.toString());
         }
     }
 
@@ -231,7 +231,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.error(sw.toString());
+            callbackContext.success(sw.toString());
         }
     }
 
@@ -253,7 +253,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.error(sw.toString());
+            callbackContext.success(sw.toString());
         }
     }
 
@@ -276,18 +276,21 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.error(sw.toString());
+            callbackContext.success(sw.toString());
         }
     }
 
     private void printText(JSONObject obj, Boolean standalone, CallbackContext callbackContext){
         try{
+          byte[] btUTF8 = new byte[0];
           String text = obj.getString("text");
           Integer align = obj.getInt ("align");
           if(mIzkcService.checkPrinterAvailable() == true){
+            mIzkcService.sendRAWData("print", new byte[]{0x1C, 0x43, (byte) 0xFF});
             printer_available = "Text sent to printer.";
             mIzkcService.setAlignment(align);
-            mIzkcService.printGBKText(text);
+            btUTF8 = text.getBytes("UTF-8");
+            mIzkcService.sendRAWData("print", btUTF8);
           }else{
               printer_available = "Printer not initialized or unavailable.";
           }
@@ -298,7 +301,7 @@ public class ZKCService extends CordovaPlugin {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            callbackContext.error(sw.toString());
+            callbackContext.success(sw.toString());
         }
     }
 
@@ -330,7 +333,7 @@ public class ZKCService extends CordovaPlugin {
                       StringWriter sw = new StringWriter();
                       PrintWriter pw = new PrintWriter(sw);
                       e.printStackTrace(pw);
-                      callbackContext.error(sw.toString());
+                      callbackContext.success(sw.toString());
                 }
             }
         });
@@ -406,7 +409,7 @@ public class ZKCService extends CordovaPlugin {
                   StringWriter sw = new StringWriter();
                   PrintWriter pw = new PrintWriter(sw);
                   e.printStackTrace(pw);
-                  callbackContext.error(sw.toString());
+                  callbackContext.success(sw.toString());
               }
               }
           });
@@ -501,7 +504,7 @@ public class ZKCService extends CordovaPlugin {
 							StringWriter sw = new StringWriter();
 							PrintWriter pw = new PrintWriter(sw);
 							e.printStackTrace(pw);
-							callbackContext.error(sw.toString());
+							callbackContext.success(sw.toString());
 						}
 						//发送消息绑定成功 send message to notify bind success
 						//sendEmptyMessage(MessageType.BaiscMessage.SEVICE_BIND_SUCCESS);
@@ -560,7 +563,7 @@ public class ZKCService extends CordovaPlugin {
 						StringWriter sw = new StringWriter();
 						PrintWriter pw = new PrintWriter(sw);
 						e.printStackTrace(pw);
-						callbackContext.error(sw.toString());
+						callbackContext.success(sw.toString());
 					}
 				}
 			}
