@@ -23,6 +23,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
+import android.text.TextUtils;
 import android.graphics.BitmapFactory;
 import android.view.inputmethod.InputMethodManager;
 import org.apache.cordova.PluginResult;
@@ -113,21 +114,35 @@ public class ZKCService extends CordovaPlugin {
 
     private void turnOnPrinter(CallbackContext callbackContext) {
       int last_module_flag = module_flag;
-      module_flag = 8;
       if(mIzkcService != null){
-        try{
-            mIzkcService.setModuleFlag(module_flag);
-            callbackContext.success("Printer Turned On");
-        }catch (RemoteException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            callbackContext.success(sw.toString());
-        }
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+              try{
+                module_flag = 8;
+                mIzkcService.setModuleFlag(module_flag);
+                module_flag = last_module_flag;
+                mIzkcService.setModuleFlag(module_flag);
+                String printerSoftVersion = mIzkcService.getFirmwareVersion1();
+                running_flag = true;
+                while(running_flag){
+                  if(!TextUtils.isEmpty(printerSoftVersion)){
+                    running_flag = false;
+                    callbackContext.success("Printer Turned On, Firmware Ver. "+ printerSoftVersion);
+                  }else{
+                    printerSoftVersion = mIzkcService.getFirmwareVersion1();
+                  }
+                }
+              }catch (Exception e) {
+                  StringWriter sw = new StringWriter();
+                  PrintWriter pw = new PrintWriter(sw);
+                  e.printStackTrace(pw);
+                  callbackContext.error(sw.toString());
+              }
+            }
+        });
       }else{
         callbackContext.error("AIDL Service not connected");
       }
-      module_flag = last_module_flag;
 	}
 
     private void turnOffPrinter(CallbackContext callbackContext) {
